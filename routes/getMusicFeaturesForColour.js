@@ -6,6 +6,7 @@ function colourDistance(hsl1, hsl2) {
     /* This function takes two colours in HSL format and returns the distance between them
     The distance is found for every single point such that we can find the closest to
     the given colour */
+
     let hueDistance = Math.min(Math.abs(hsl1.hue - hsl2.hue), 360 - Math.abs(hsl1.hue - hsl2.hue));
     let saturationDistance = Math.abs(hsl1.saturation - hsl2.saturation);
     let lightnessDistance = Math.abs(hsl1.lightness - hsl2.lightness);
@@ -62,10 +63,12 @@ function findClosestColour(userProfile, selectedHSL) {
 
     // Calculate the weighted average of the music features
     const interpolatedFeatures = {
-        energy: weightedSumFeatures.energy / totalWeight,
-        valence: weightedSumFeatures.valence / totalWeight,
-        danceability: weightedSumFeatures.danceability / totalWeight
+        energy: (weightedSumFeatures.energy / totalWeight).toPrecision(3),
+        valence: (weightedSumFeatures.valence / totalWeight).toPrecision(3),
+        danceability: (weightedSumFeatures.danceability / totalWeight).toPrecision(3)
     };
 
     return interpolatedFeatures
 }
+
+module.exports = { colourDistance, findClosestColour };
