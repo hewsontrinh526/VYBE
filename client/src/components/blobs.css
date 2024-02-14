@@ -54,3 +54,14 @@ head::after {
     transform: rotate(360deg) scale(18) translateX(20px);
   }
 }
+
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 150px;
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: transparent;
+}
