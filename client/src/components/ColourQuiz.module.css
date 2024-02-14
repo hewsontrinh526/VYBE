@@ -1,0 +1,134 @@
+
+  .colours-select {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    justify-content: space-around;
+    row-gap: 0.4em;
+    column-gap: 0.8em;
+    /* border: 1px solid purple; */
+  }
+
+  button {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    border-radius: 10%;
+    margin-bottom: 25%;
+  }
+  button:hover {
+    /* opacity: 0.5; */
+    filter: brightness(40%);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .square-1 {
+    background-color: #DF0000;
+  }
+
+  .square-2 {
+    background-color: #F58501;
+  }
+
+  .square-3 {
+    background-color: #FAFF01;
+  }
+
+  .square-4 {
+    background-color: #5EF105;
+  }
+
+  .square-5 {
+    background-color: #00B2FF;
+  }
+
+  .square-6 {
+    background-color: #BD00FF;
+  }
+
+  .playlist {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    bottom: 25%;
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: repeat(1, 1fr);
+    max-width: 100%;
+    height: 15%;
+    /* border: 1px solid pink; */
+  }
+
+  .colours-saved {
+    position: absolute;
+    top: 88%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content: space-evenly;
+    align-items: center;
+    height: 15%;
+    max-width: 100%;
+    gap: 0.8em;
+    /* border: 1px solid purple; */
+  }
+
+  .circle-1 {
+    background-color: transparent;
+    border: 2px dashed black;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  .circle-2 {
+    background-color: transparent;
+    border: 2px dashed black;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  .circle-3 {
+    background-color: transparent;
+    border: 2px dashed black;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  .circle-4 {
+    background-color: transparent;
+    border: 2px dashed black;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  .circle-5 {
+    background-color: transparent;
+    border: 2px dashed black;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ffffff;
+    font-family: 'Sushi-Sans', sans-serif;
+  }
+
+  h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #ffffff;
+    font-family: 'Sushi-Sans', sans-serif;
+  }
