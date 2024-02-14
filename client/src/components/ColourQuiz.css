@@ -89,59 +89,41 @@ html {
     gap: 0.7em;
   }
 
-  .square-1 {
+  button {
     width: 90px;
     height: 90px;
     display: flex;
     border-radius: 10%;
     margin-bottom: 25%;
+  }
+  button:hover {
+    /* opacity: 0.5; */
+    filter: brightness(40%);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .square-1 {
     background-color: #DF0000;
   }
 
   .square-2 {
-    width: 90px;
-    height: 90px;
-    display: flex;
-    border-radius: 10%;
     background-color: #F58501;
   }
 
   .square-3 {
-    width: 90px;
-    height: 90px;
-    display: flex;
-    border-radius: 10%;
     background-color: #FAFF01;
   }
 
   .square-4 {
-    width: 90px;
-    height: 90px;
-    display: flex;
     background-color: #5EF105;
-    border-radius: 10%;
   }
 
   .square-5 {
-    width: 90px;
-    height: 90px;
-    display: flex;
-    border-radius: 10%;
     background-color: #00B2FF;
   }
 
   .square-6 {
-    width: 90px;
-    height: 90px;
-    display: flex;
-    border-radius: 10%;
     background-color: #BD00FF;
-  }
-
-  button:hover {
-    /* opacity: 0.5; */
-    filter: brightness(40%);
-    transition: background-color 0.3s ease;
   }
 
   .playlist {
