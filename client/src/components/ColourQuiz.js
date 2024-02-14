@@ -2,23 +2,9 @@ import React from 'react';
 import './ColourQuiz.css';
 
 function ColourQuiz() {
-  const handleSaveRed = () => {
-    console.log('Red has been selected');
-  };
-  const handleSaveOrange = () => {
-    console.log('Orange has been selected');
-  };
-  const handleSaveYellow = () => {
-    console.log('Yellow has been selected');
-  };
-  const handleSaveGreen = () => {
-    console.log('Green has been selected');
-  };
-  const handleSaveBlue = () => {
-    console.log('Blue has been selected');
-  };
-  const handleSavePurple = () => {
-    console.log('Purple has been selected');
+  const handleSaveColour = (event) => {
+    const selectedColour = event.target.getAttribute('data-colour');
+    console.log(selectedColour);
   };
 
   return (
@@ -31,34 +17,34 @@ function ColourQuiz() {
           <button
             className="square-1"
             data-colour="#DF0000"
-            onClick={handleSaveRed}
+            onClick={handleSaveColour}
           ></button>
           <button
             className="square-2"
             data-colour="#F58501"
-            onClick={handleSaveOrange}
+            onClick={handleSaveColour}
           ></button>
           <button
             className="square-3"
             data-colour="#FAFF01"
-            onClick={handleSaveYellow}
+            onClick={handleSaveColour}
           ></button>
         </div>
         <div className="row">
           <button
             className="square-4"
             data-colour="#5EF105"
-            onClick={handleSaveGreen}
+            onClick={handleSaveColour}
           ></button>
           <button
             className="square-5"
             data-colour="#00B2FF"
-            onClick={handleSaveBlue}
+            onClick={handleSaveColour}
           ></button>
           <button
             className="square-6"
             data-colour="#BD00FF"
-            onClick={handleSavePurple}
+            onClick={handleSaveColour}
           ></button>
         </div>
       </div>
