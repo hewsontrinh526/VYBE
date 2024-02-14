@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './HomePage.css';
+import './blobs.css';
+import styles from './HomePage.module.css';
 
 function HomePage() {
   const [showPlayVybeModal, setShowPlayVybeModal] = useState(false);
@@ -39,21 +40,20 @@ function HomePage() {
   return (
     <div className="home-container">
       <header className="header">
-        <h1 className="title">vybe</h1>
       </header>
-      <div className="button-container">
-        <button className="home-button" onClick={handleCreateVybe}>create vybe</button>
-        <button className="home-button" onClick={handlePlayVybe}>play vybe</button>
+      <div className={styles['button-container']}>
+        <button className={styles['home-button']} onClick={handleCreateVybe}>create vybe</button>
+        <button className={styles['home-button']} onClick={handlePlayVybe}>play vybe</button>
       </div>
       {showPlayVybeModal && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className={styles['modal']}>
+          <div className={styles['modal-content']}>
             <span className="close-button" onClick={handleClosePlayVybeModal}>&times;</span>
             <iframe
-            src="https://open.spotify.com/embed/playlist/37i9dQZF1EIf9l7ez5L0Ms"
+            src="https://open.spotify.com/embed/playlist/5OAu0ZRy6pWVnPaSarvdzs"
             allow="encrypted-media"
             name="spotify_iframe"
-            className="spotify-iframe"
+            className={styles['spotify-iframe']}
             title="Playlist"
             ></iframe>
           </div>
