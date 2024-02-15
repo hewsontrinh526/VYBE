@@ -41,12 +41,45 @@ function findClosestColour(userProfile, selectedHSL) {
     an adjustment of +1 to avoid division by zero on the of-chance there is a
     division by zero */
 
+    // Finds the two closest colours to the selected colour
+    const twoClosest = distances.sort((a, b) => a.distance - b.distance).slice(0, 2);
+
     let weightedSumFeatures = { energy: 0, valence: 0, danceability: 0 };
     let totalWeight = 0;
 
-    // Calculate the weighted sum of features and total weight
-    distances.forEach(item => {
+    // Calculate the weighted sum for all colours of features and total weight
+    /* distances.forEach(item => {
         let weight = 1 / (item.distances + 1); // Added 1 to avoid division by 0
+        totalWeight += weight; */
+
+    // Calculate the weighted sum of features for only the two closest colours
+    twoClosest.forEach(item => {
+        // We can have multiple weighting mechanisms. Each one does a slightly
+        // different things.
+
+        /* let weight = Math.exp(-alpha * item.distance);
+        // Expoential weighting where alpha is a parameter that can control how
+        // quickly the weight decreases with distance. A higher alpha value will
+        // mean the weight drops off more rapidly with distance making the algorithm
+        // more sensitive to small differences in distances */
+
+        /* let weight = 1 / Math.pow(item.distance + 1, beta);
+        // Power weighting. The beta parameter controls the influence of further
+        // colours from the selected colour. When beta > 1, the influence of further
+        // colours decreases more sharply. */
+
+        /* let weight = Math.exp(-Math.pow(item.distance, 2) / (2 * sigma * sigma));
+        // The Guassian weighting can be use to model weights such that the influence
+        // of colours follows a bell curve relative to their distance. The method
+        // provides a smooth transition in the influence of colours, with a
+        // controllable rate of decrease.
+
+        // The sigma parameter controls the spread of the bell curve. Smaller
+        // sigma values will concentrate the influence around colours that are
+        // very close to the selected colour, whereas larger values will allow
+        // for a broader range of influence. */
+
+        let weight = 1 / (item.distance + 1); // Still adding 1 to avoid division by zero
         totalWeight += weight;
 
         weightedSumFeatures.energy += item.features.energy * weight;
