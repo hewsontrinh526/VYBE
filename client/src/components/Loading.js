@@ -37,6 +37,12 @@ const LoadingAnimation = () => {
   };
 
   return (
+    <div>
+    <header className={styles['header']}>
+				<div className='container-logo'>
+					<img src='/logo.png' alt='logo' className='logo' />
+				</div>
+    </header>
     <div className={styles['loadingContainer']}>
       <div className={styles['boxContainerTop']}>
         {renderBoxes(5)}
@@ -44,6 +50,7 @@ const LoadingAnimation = () => {
       <div className={styles['boxContainerBottom']}>
         {renderBoxes(5, false)}
       </div>
+    </div>
     </div>
   );
 };
