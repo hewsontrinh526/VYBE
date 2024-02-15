@@ -1,0 +1,183 @@
+@keyframes quiet {
+    25% {
+        height: 15%;
+        /* transform: scaleY(0.3); */
+    }
+
+    50% {
+        height: 20%;
+        /* transform: scaleY(0.4); */
+    }
+
+    75% {
+        height: 40%;
+        /* transform: scaleY(0.8); */
+    }
+}
+
+
+@keyframes normal {
+    25% {
+        height: 50%;
+        /* transform: scaleY(1); */
+    }
+
+    50% {
+        height: 20%;
+        /* transform: scaleY(0.4); */
+    }
+
+    75% {
+        height: 30%;
+        /* transform: scaleY(0.6); */
+    }
+}
+
+@keyframes loud {
+    25% {
+        height: 50%;
+        /* transform: scaleY(1); */
+    }
+
+    50% {
+        height: 20%;
+        /* transform: scaleY(0.4); */
+    }
+
+    75% {
+        height: 60%;
+        /* transform: scaleY(1.2); */
+    }
+}
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.boxContainerTop {
+    display: flex;
+    justify-content: space-evenly;
+    height: 128px;
+    --boxSize: 32px;
+    --gutter: 16px;
+    width: 240px;
+}
+
+.box {
+    outline: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.boxContainerTop .box .topSemi {
+    width: 100%;
+    height: 16px;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background: #F6FAF9;
+}
+
+.boxContainerTop .box .bottomSemi {
+    width: 100%;
+    height: 16px;
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    background: #F6FAF9;
+}
+
+.boxContainerTop .box .centreRect {
+    position: relative;
+    /* transform: scaleY(0.4); */
+    height: 100%;
+    width: var(--boxSize);
+    background: #F6FAF9;
+    animation-duration: 1.2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    transform-origin: bottom;
+}
+
+.boxContainerTop .box1 .centreRect {
+    animation-name: quiet;
+}
+
+.boxContainerTop .box2 .centreRect {
+    animation-name: normal;
+}
+
+.boxContainerTop .box3 .centreRect {
+    animation-name: quiet;
+}
+
+.boxContainerTop .box4 .centreRect {
+    animation-name: loud;
+}
+
+.boxContainerTop .box5 .centreRect {
+    animation-name: quiet;
+}
+
+.boxContainerBottom {
+    transform: scaleY(-1);
+    display: flex;
+    justify-content: space-evenly;
+    height: 128px;
+    --boxSize: 32px;
+    --gutter: 16px;
+    width: 240px;
+    opacity: 50%;
+}
+
+.boxContainerBottom .box .topSemi {
+    width: 100%;
+    height: 16px;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background: #000000;
+    opacity: 6%;
+}
+
+.boxContainerBottom .box .bottomSemi {
+    width: 100%;
+    height: 16px;
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    background: #F6FAF9;
+    opacity: 12%;
+}
+
+.boxContainerBottom .box .centreRect{
+    position: relative;
+    /* transform: scaleY(0.4); */
+    height: 100%;
+    width: var(--boxSize);
+    background: linear-gradient(to top, #FFFFFF, #000000);
+    opacity: 12%;
+    animation-duration: 1.2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    transform-origin: top;
+}
+
+.boxContainerBottom .box1 .centreRect{
+    animation-name: quiet;
+}
+
+.boxContainerBottom .box2 .centreRect{
+    animation-name: normal;
+}
+
+.boxContainerBottom .box3 .centreRect{
+    animation-name: quiet;
+}
+
+.boxContainerBottom .box4 .centreRect{
+    animation-name: loud;
+}
+
+.boxContainerBottom .box5 .centreRect{
+    animation-name: quiet;
+}
