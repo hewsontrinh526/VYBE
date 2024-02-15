@@ -39,7 +39,10 @@ function HomePage() {
 
   return (
     <div className="home-container">
-      <header className="header">
+      <header className={styles['header']}>
+				<div className='container-logo'>
+					<img src='/logo.png' alt='logo' className='logo' />
+				</div>
       </header>
       <div className={styles['button-container']}>
         <button className={styles['home-button']} onClick={handleCreateVybe}>create vybe</button>
@@ -48,7 +51,7 @@ function HomePage() {
       {showPlayVybeModal && (
         <div className={styles['modal']}>
           <div className={styles['modal-content']}>
-            <span className="close-button" onClick={handleClosePlayVybeModal}>&times;</span>
+            <span className={styles['close-button']} onClick={handleClosePlayVybeModal}>&times;</span>
             <iframe
             src="https://open.spotify.com/embed/playlist/5OAu0ZRy6pWVnPaSarvdzs"
             allow="encrypted-media"
