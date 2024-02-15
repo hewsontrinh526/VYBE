@@ -6,21 +6,28 @@ const express = require('express');
 const mongoose = require('mongoose');
 const axios = require('axios');
 const qs = require('qs');
+const path = require('path');
+const cors = require('cors');
+
+// models and utility functions
 const User = require('./models/User');
 const { exchangeCodeForTokens, getUserInfo, calculateTokenExpiry } = require('./spotifyUtils');
 
 // init express app
 const app = express();
-const port = 3000;
+const port = 3500;
 
-// set ejs as template engine
-app.set('view engine', 'ejs');
+// middlewares
+// for parsing application/json
+app.use(express.json())
+// enable CORS for all routes
+app.use(cors());
 
-// use the static files from the 'public' directory
-app.use(express.static('public'));
+// use the static files from the react app build directory
+app.use(express.static(path.join(__dirname, 'client/build')));
 
-// route for the home page
-app.get('/', (req, res) => {
+// endpoint /api/auth/url for the spotifyAuthUrl
+app.get('/api/auth/url', (req, res) => {
     const scopes = [
         'user-read-private', // read access to sub details
         'user-library-read', // read access to user's library
@@ -36,10 +43,25 @@ app.get('/', (req, res) => {
         redirect_uri: process.env.REDIRECT_URI,
         show_dialog: true,
     })}`;
-    // render the login page with spotify auth url
-    res.render('login', { spotifyAuthUrl });
+    res.json({ spotifyAuthUrl });
 });
 
+// simple route to test the callback
+app.get('/callback', async (req, res) => {
+    const code = req.query.code; // the code from spotify's redirect
+
+    try {
+        const spotifyTokens = await exchangeCodeForTokens(code);
+        console.log(spotifyTokens);
+
+        // directly redirect to /quiz without checking database
+        res.redirect('/app/quiz');
+    } catch (error) {
+        console.error('Error during code exchange:', error);
+    }
+})
+
+/* commenting out to test the simple callback above works
 // route for spotify callback
 app.get('/callback', async (req, res) => {
     // code from the query parameters
@@ -79,10 +101,16 @@ app.get('/callback', async (req, res) => {
     // not yet implemented, waiting on quiz schema
     const hasCompletedQuiz = await userQuizCompleted(user._id);
     if (hasCompletedQuiz) {
-        res.redirect('/home');
+        res.redirect('/app/home');
     } else {
-        res.redirect('/quiz');
+        res.redirect('/app/quiz');
     }
+});
+*/
+
+// fallback to serve react app for any other routes
+app.get('/app/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
 // start the server
