@@ -3,26 +3,29 @@ import styles from './Loading.module.css';
 import './blobs.css';
 
 const LoadingAnimation = () => {
-  // Predefine animation styles for each box
-  const animations = ['quiet', 'normal', 'loud'];
-  const boxAnimations = Array(5).fill(null).map(() => {
-    const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-    const duration = `${1 + Math.random()}s`;
-    const delay = `${Math.random() * 0.5}s`;
+  // Use a fixed sequence of animations for illustration
+  const animations = ['quiet', 'normal', 'loud', 'normal', 'quiet'];
+
+  // Adjusted to introduce a slight delay for each box to start its animation
+  // to create a more coordinated and smooth visual effect
+  const boxAnimations = animations.map((animation, index) => {
+    const duration = '1.5s'; // Consider slightly varying durations if it enhances smoothness
+    const delay = `${index * 0.25}s`; // Staggered start times for each animation
     return {
-      animationName: `${styles[randomAnimation]}`,
+      animationName: `${styles[animation]}`,
       animationDuration: duration,
       animationDelay: delay,
       animationTimingFunction: 'ease-in-out',
       animationIterationCount: 'infinite',
+      animationFillMode: 'forwards', // Ensure the style stays at the last keyframe post-animation
     };
   });
 
-  // Function to generate boxes with repeated structure
+  // Generate boxes with animation
   const renderBoxes = (boxCount, isTop = true) => {
     return [...Array(boxCount)].map((_, index) => {
       const animationStyle = {
-        ...boxAnimations[index],
+        ...boxAnimations[index % animations.length], // Cycle through animations based on index
         transformOrigin: isTop ? 'bottom' : 'top',
       };
 
@@ -38,19 +41,19 @@ const LoadingAnimation = () => {
 
   return (
     <div>
-    <header className={styles['header']}>
-				<div className='container-logo'>
-					<img src='/logo.png' alt='logo' className='logo' />
-				</div>
-    </header>
-    <div className={styles['loadingContainer']}>
-      <div className={styles['boxContainerTop']}>
-        {renderBoxes(5)}
+      <header className={styles['header']}>
+        <div className='container-logo'>
+          <img src='/logo.png' alt='logo' className='logo' />
+        </div>
+      </header>
+      <div className={styles['loadingContainer']}>
+        <div className={styles['boxContainerTop']}>
+          {renderBoxes(5)}
+        </div>
+        <div className={styles['boxContainerBottom']}>
+          {renderBoxes(5, false)}
+        </div>
       </div>
-      <div className={styles['boxContainerBottom']}>
-        {renderBoxes(5, false)}
-      </div>
-    </div>
     </div>
   );
 };

@@ -1,54 +1,39 @@
 @keyframes quiet {
-    25% {
-        height: 15%;
-        /* transform: scaleY(0.3); */
+    0%, 100% {
+        height: 30%;
     }
-
-    50% {
-        height: 20%;
-        /* transform: scaleY(0.4); */
-    }
-
-    75% {
+    25%, 75% {
         height: 40%;
-        /* transform: scaleY(0.8); */
+    }
+    50% {
+        height: 15%;
     }
 }
 
-
 @keyframes normal {
-    25% {
+    0%, 100% {
+        height: 35%;
+    }
+    25%, 75% {
         height: 50%;
-        /* transform: scaleY(1); */
     }
-
     50% {
-        height: 20%;
-        /* transform: scaleY(0.4); */
-    }
-
-    75% {
-        height: 30%;
-        /* transform: scaleY(0.6); */
+        height: 15%;
     }
 }
 
 @keyframes loud {
-    25% {
-        height: 50%;
-        /* transform: scaleY(1); */
+    0%, 100% {
+        height: 45%;
     }
-
-    50% {
-        height: 20%;
-        /* transform: scaleY(0.4); */
-    }
-
-    75% {
+    25%, 75% {
         height: 60%;
-        /* transform: scaleY(1.2); */
+    }
+    50% {
+        height: 15%;
     }
 }
+
 
 .loadingContainer {
     display: flex;
@@ -58,6 +43,7 @@
     margin: 0;
     padding: 0;
     height: 100vh;
+    background-color: transparent;
 }
 
 .boxContainerTop {
@@ -67,6 +53,7 @@
     --boxSize: 32px;
     --gutter: 16px;
     width: 240px;
+    background-color: transparent;
 }
 
 .box {
@@ -97,7 +84,7 @@
     width: var(--boxSize);
     background: #F6FAF9;
     animation-duration: 1.2s;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: ease;
     animation-iteration-count: infinite;
     transform-origin: bottom;
 }
@@ -107,15 +94,15 @@
 }
 
 .boxContainerTop .box2 .centreRect {
-    animation-name: normal;
-}
-
-.boxContainerTop .box3 .centreRect {
     animation-name: quiet;
 }
 
+.boxContainerTop .box3 .centreRect {
+    animation-name: normal;
+}
+
 .boxContainerTop .box4 .centreRect {
-    animation-name: loud;
+    animation-name: quiet;
 }
 
 .boxContainerTop .box5 .centreRect {
@@ -157,7 +144,7 @@
     background: linear-gradient(to top, #FFFFFF, #000000);
     opacity: 12%;
     animation-duration: 1.2s;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: ease;
     animation-iteration-count: infinite;
     transform-origin: top;
 }
@@ -167,15 +154,15 @@
 }
 
 .boxContainerBottom .box2 .centreRect{
-    animation-name: normal;
+    animation-name: quier;
 }
 
 .boxContainerBottom .box3 .centreRect{
-    animation-name: quiet;
+    animation-name: normal;
 }
 
 .boxContainerBottom .box4 .centreRect{
-    animation-name: loud;
+    animation-name: quiet;
 }
 
 .boxContainerBottom .box5 .centreRect{
