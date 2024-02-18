@@ -9,7 +9,7 @@ const LoadingAnimation = () => {
   // Adjusted to introduce a slight delay for each box to start its animation
   // to create a more coordinated and smooth visual effect
   const boxAnimations = animations.map((animation, index) => {
-    const duration = '1.5s'; // Consider slightly varying durations if it enhances smoothness
+    const duration = '1s'; // Consider slightly varying durations if it enhances smoothness
     const delay = `${index * 0.25}s`; // Staggered start times for each animation
     return {
       animationName: `${styles[animation]}`,
