@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import ColourSaved from './ColourSaved';
+// import TrackFeatures from './ColourTrackFeats';
 
 function ColourSelect() {
 	// for coloured square buttons
 	const [colour, setColour] = useState('');
 	let [clickCount, setClickCount] = useState(0);
+	let [nextSong, setNextSong] = useState();
+	// const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
 	const handleColourSelect = (event) => {
 		event.preventDefault();
 		const selectedColour = event.target.getAttribute('data-colour');
 		setColour(selectedColour);
+		// console.log(`selected: ${selectedColour}`);
+		// console.log(`colour: ${colour}`);
 		setClickCount((prevCount) => prevCount + 1);
-		// console.log(selectedColour);
-
-		// for colour wheel
-		// const [colour, setColour] = React.useState('');
-		// data store in react
-		// };
+		event.target.disabled = true;
 	};
+
+	useEffect(() => {
+		if (colour) {
+			console.log(`Colour: ${colour}`);
+		}
+	}, [colour]);
 
 	return (
 		<div>
@@ -60,6 +67,7 @@ function ColourSelect() {
 			</form>
 			<div>
 				<ColourSaved newColour={colour} clickCount={clickCount} />
+				{/* <TrackFeatures colour={colour} /> */}
 			</div>
 		</div>
 	);
