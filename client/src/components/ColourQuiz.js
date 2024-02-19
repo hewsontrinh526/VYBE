@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import ColourSelect from './ColourSelect';
-import Playlist from './Playlist';
+import ColourPlaylist from './ColourPlaylist';
 import ColourSaved from './ColourSaved';
 
 function ColourQuiz() {
@@ -14,7 +14,7 @@ function ColourQuiz() {
 				</div>
 			</header>
 			<ColourSelect />
-			<Playlist />
+			<ColourPlaylist />
 			<ColourSaved />
 		</div>
 	);
