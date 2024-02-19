@@ -1,10 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import './blobs.css';
 import styles from './HomePage.module.css';
+import axios from 'axios';
 
 function HomePage() {
   const [showPlayVybeModal, setShowPlayVybeModal] = useState(false);
-  // add functionality for create vybe button
+  const setSpotifyToken = useState('');
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const response = await axios.get('/api/token');
+        setSpotifyToken(response.data.access_token);
+        initSpotifyPlayer(response.data.access_token);
+      } catch (error) {
+        console.error('Error fetching token:', error);
+      }
+    };
+
+    fetchToken();
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+    // calls function when Spotify iFrame API is ready
+    const initSpotifyPlayer = (token) => {
+      if (window.Spotify && token) {
+        const player = new window.Spotify.Player({
+          name: 'Web Playback SDK Quick Start Player',
+          getOAuthToken: cb => { cb(token); }
+        });
+
+        // event listener for spotify player
+        player.addListener('ready', ({ device_id }) => {
+          console.log('Ready with Device ID', device_id);
+        });
+
+        player.connect();
+      }
+    };
+
+    // add functionality for create vybe button
   const handleCreateVybe = () => {
     console.log('create vybe button clicked');
   };
@@ -18,24 +52,6 @@ function HomePage() {
   const handleClosePlayVybeModal = () => {
     setShowPlayVybeModal(false);
   }
-
-  useEffect(() => {
-    // calls function when Spotify iFrame API is ready
-    if (window.Spotify) {
-      const player = new window.Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
-        getOAuthToken: cb => { cb('BQDuRzGNYb2KT5Mx9mikjHSZt0C5ZS2UXknnPtAfvmo26qPEjiMQTBlTOftA-NxaJBnlH2Gmi74Vpyl5y4VC-F-TptaFRVORx2-TwBlLlEb7eXmzWg83GwZC_45rUFFQOXiOkMBYov6ibi31mRa6nQCANAGzx_b42yf4Wu9_whcm0s9cE2Yywq3vbFkYGblqcmCEqbo-JUEmEwJqhEvVO5u3Es-D')}
-      });
-
-      // Readying the player
-      player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
-
-      // Connecting to the player
-      player.connect();
-    }
-    }, []);
 
   return (
     <div className="home-container">
