@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
-// import TrackFeatures from './ColourTrackFeats';
+import TrackFeatures from './ColourTrackFeats';
 // import ColourSelect from './ColourSelect';
 
 const trackIds = [
@@ -73,7 +73,7 @@ const ColourPlaylist = () => {
 				</button>
 			</div>
 			<div>
-				{/* <TrackFeatures trackId={trackIds[currentTrackIndex]} /> */}
+				<TrackFeatures trackId={trackIds[currentTrackIndex]} />
 				{/* <ColourSelect
 					currentTrackIndex={currentTrackIndex}
 					setCurrentTrackIndex={setCurrentTrackIndex}
