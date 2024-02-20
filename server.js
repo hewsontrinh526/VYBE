@@ -102,6 +102,18 @@ app.get('/callback', async (req, res) => {
         console.log('User info updated:', user);
     }
     // not yet implemented, waiting on quiz schema
+
+    // Check if the user has completed the quiz
+    const quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
+    if (quizCount > 0) {
+        res.redirect('/app/home'); // Redirect to /app/home if quiz is completed
+    } else {
+        res.redirect('/app/quiz'); // Redirect to /app/quiz if quiz is not completed
+    } catch (error) {
+        console.error('Error in quiz count', error);
+        res.status(500).send('Error in quiz count');
+    }
+
     /* const userQuizCompleted = async (userId) => {
         const quizCount = await Quiz.countDocuments({ userId: userId });
         return quizCount > 0;
@@ -115,7 +127,54 @@ app.get('/callback', async (req, res) => {
     } */
 
     // redirect to /app/home for testing purposes
-    res.redirect('/app/home');
+    // res.redirect('/app/home');
+});
+
+// Starting the quiz
+app.post('/quiz/start', (req, res) => {
+    // Initialise the quiz data in the session
+    req.session.quizData = {
+        spotifyID: req.body.spotifyID,
+        results: []
+    };
+    res.send('Quiz started');
+});
+
+// Updating Quiz results
+app.post('/quiz/update', (req, res) => {
+    // Destructure songData from the request body
+    const { songData } = req.body;
+    let quizData = req.session.quizData;
+    // Retrieves the current quiz data from the session
+    const songIndex = quizData.results.findIndex(song => song.title === songData.title);
+    // Searches for the index of a song in the results array that matches the songData
+    // If found, update the songData, else add the songData to the results array
+    if (songIndex > -1) {
+        quizData.results[songIndex] = songData;
+    } else {
+        if (quizData.results.length < 5) {
+            quizData.results.push(songData);
+        } else {
+            return res.status(400).send('Quiz is already full');
+        }
+    }
+    // Sends the updated quiz data back to the session
+    req.session.quizData = quizData;
+    res.send('Quiz updated successfully');
+});
+
+// Saving quiz to database
+app.post('/quiz/save', async (req, res) => {
+    const quizData = req.session.quizData;
+    try {
+        const newQuiz = new Quiz(quizData);
+        await newQuiz.save();
+        delete req.session.quizData; // Clears the quiz data from session
+        res.send('Quiz saved successfully');
+    } catch (error) {
+        console.error('Error saving quiz:', error);
+        res.status(500).send('Error saving quiz');
+    }
 });
 
 // fallback to serve react app for any other routes
