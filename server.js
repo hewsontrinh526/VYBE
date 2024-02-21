@@ -103,6 +103,7 @@ app.get('/callback', async (req, res) => {
     }
     // not yet implemented, waiting on quiz schema
 
+    /* commenting out while testing wheel
     // Check if the user has completed the quiz
     const quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
     if (quizCount > 0) {
@@ -113,7 +114,7 @@ app.get('/callback', async (req, res) => {
         console.error('Error in quiz count', error);
         res.status(500).send('Error in quiz count');
     }
-
+*/
     /* const userQuizCompleted = async (userId) => {
         const quizCount = await Quiz.countDocuments({ userId: userId });
         return quizCount > 0;
@@ -127,9 +128,43 @@ app.get('/callback', async (req, res) => {
     } */
 
     // redirect to /app/home for testing purposes
-    // res.redirect('/app/home');
+    res.redirect('/app/home');
 });
 
+// route handler for GET /api/token in the client cred grant flow
+// gets a token for the Spotify Web Playback SDK
+app.get('/api/token', async (req, res) => {
+    // url we send request to get token
+    const tokenUrl = 'https://accounts.spotify.com/api/token';
+
+    // Auth credentials for Spotify within the client credientials auth flow
+    const credentials = Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64');
+
+    try {
+        // axois POST to spotify accounts ervice
+        const response = await axios({
+            method: 'post',
+            url: tokenUrl,
+            headers: {
+                'Authorization': `Basic ${credentials}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            // data sent in the request
+            data: qs.stringify({
+                grant_type: 'client_credentials'
+            })
+        });
+        // on success, send the access token and expiration time back to the client
+        // client can use token to make requests to the Web API
+        res.json({
+            access_token: response.data.access_token,
+            expires_in: response.data.expires_in
+        });
+    } catch (error) {
+        console.error('Error getting client creds token:', error);
+        res.status(500).send('Error getting client creds token');
+    }
+});
 // Starting the quiz
 app.post('/quiz/start', (req, res) => {
     // Initialise the quiz data in the session
