@@ -1,80 +1,56 @@
-/* eslint-disable */
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
-// import PushToDatabase from './ColourQuizData';
 
-const TrackFeatures = ({ trackId }) => {
-	const [trackFeatures, setTrackFeatures] = useState(null);
-	const token =
-		'BQC-zl-cvTMVC1rKD0Ka0HRVXGuU9eghpQEA22kRftYcgwZ7FN_ILusQEqd3Foa5PKioxzpOrywrBeCnCAzKWv3ZZibgR07J4iJrYdHpwv2xF506w3cHRH2pi7Su6XIdKwrreACoEPzsKvsYZ14HUkSwVv8xVjsVGOHeUQxbFXqPjWQtXeXhS6aOdocakZIXHYuQ4dXhQs7ZTjpKcs9rRS5LYj1a';
-	useEffect(() => {
-		const fetchTrackFeatures = async () => {
-			try {
-				const response = await axios.get(
-					`https://api.spotify.com/v1/audio-features/${trackId}`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					}
-				);
-				const trackFeaturesData = response.data;
-				setTrackFeatures(trackFeaturesData);
-			} catch (error) {
-				console.error('Error fetching track features:', error);
-			}
+class TrackFeatures extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			trackFeatures: null,
 		};
+		this.token =
+			'BQABLWsmV-ZoxcXNPKqjRFHvL_dgYfBM5TiLpfGO_a9vwOfavQQSIfAtq6Wy7rRaxbbUaTSHkg00Q5Cd5-KYAAKEJecBNCo6z8pHsXdBMjdqCDVpUC-PJaV4yPd-tSTUtUHNYBvJNeWl9ME0vfYPyJj19wTDgL8mOkpwV6BddrCxrGNoDtzLixPZI3HdBbPKakgXWRXvmjTQJfJGR0-F9-UnWgQ-';
+	}
 
-		fetchTrackFeatures();
-	}, [trackId]);
+	componentDidMount() {
+		this.fetchTrackFeatures();
+	}
 
-	useEffect(() => {
-		if (trackFeatures) {
-			// console.log(colour);
-			console.log(trackId);
-			console.log(`Energy: ${trackFeatures.energy}`);
-			console.log(`Valence: ${trackFeatures.valence}`);
-			console.log(`Danceability: ${trackFeatures.danceability}`);
+	componentDidUpdate(prevProps) {
+		if (this.props.trackId !== prevProps.trackId) {
+			this.fetchTrackFeatures();
 		}
-	}, [trackFeatures, trackId]);
+	}
 
-	// useEffect(() => {
-	// 	const sendDataToDatabase = async () => {
-	// 		try {
-	// 			if (trackFeatures) {
-	// 				console.log(trackId);
-	// 				console.log(`Energy: ${trackFeatures.energy}`);
-	// 				console.log(`Valence: ${trackFeatures.valence}`);
-	// 				console.log(`Danceability: ${trackFeatures.danceability}`);
+	fetchTrackFeatures = async () => {
+		const { trackId } = this.props;
+		try {
+			const response = await axios.get(
+				`https://api.spotify.com/v1/audio-features/${trackId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${this.token}`,
+					},
+				}
+			);
+			const trackFeaturesData = response.data;
+			this.setState({ trackFeatures: trackFeaturesData });
+		} catch (error) {
+			console.error('Error fetching track features:', error);
+		}
+	};
 
-	// 				const data = await PushToDatabase({ colour, trackId, trackFeatures });
-	// 				console.log('Yay!', data);
-	// 			}
-	// 		} catch (error) {
-	// 			console.log('Nay!', error);
-	// 		}
-	// 	};
+	render() {
+		const { trackFeatures } = this.state;
+		const { trackId } = this.props;
+		if (!trackFeatures) return null; // Render nothing until trackFeatures is fetched
 
-	// 	sendDataToDatabase();
-	// }, [trackFeatures, trackId, colour]);
+		console.log(trackId);
+		console.log(`Energy: ${trackFeatures.energy}`);
+		console.log(`Valence: ${trackFeatures.valence}`);
+		console.log(`Danceability: ${trackFeatures.danceability}`);
 
-	// useEffect(() => {
-	// 	if (trackFeatures) {
-	// 		trackFeatures.forEach((trackFeature, index) => {
-	// 			console.log(`Track ${index + 1} - Energy: ${trackFeature.energy}`);
-	// 			console.log(`Track ${index + 1} - Valence: ${trackFeature.valence}`);
-	// 			console.log(
-	// 				`Track ${index + 1} - Danceability: ${trackFeature.danceability}`
-	// 			);
-	// 		});
-	// 	}
-	// }, [trackFeatures]);
-
-	return (
-		<div>
-			{/* <PushToDatabase trackFeatures={trackFeatures} trackId={trackId} /> */}
-		</div>
-	);
-};
+		return <div>{/* Render track features */}</div>;
+	}
+}
 
 export default TrackFeatures;
