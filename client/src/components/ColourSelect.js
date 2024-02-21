@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import ColourSaved from './ColourSaved';
-// import ColourPlaylist from './ColourPlaylist';
 
 class ColourSelect extends Component {
 	constructor(props) {
