@@ -165,6 +165,7 @@ app.get('/api/token', async (req, res) => {
         res.status(500).send('Error getting client creds token');
     }
 });
+
 // Starting the quiz
 app.post('/quiz/start', (req, res) => {
     // Initialise the quiz data in the session
@@ -198,13 +199,13 @@ app.post('/quiz/update', (req, res) => {
     res.send('Quiz updated successfully');
 });
 
+
 // Saving quiz to database
 app.post('/quiz/save', async (req, res) => {
-    const quizData = req.session.quizData;
+    const quizData = req.body; // Use the body of the request directly
     try {
         const newQuiz = new Quiz(quizData);
         await newQuiz.save();
-        delete req.session.quizData; // Clears the quiz data from session
         res.send('Quiz saved successfully');
     } catch (error) {
         console.error('Error saving quiz:', error);
