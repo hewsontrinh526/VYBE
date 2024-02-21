@@ -27,7 +27,7 @@ class ColourSelect extends Component {
 			}
 		);
 		event.target.disabled = true;
-		// this.props.playNext();
+		this.props.playNext();
 	};
 
 	componentDidUpdate(prevProps, prevState) {
