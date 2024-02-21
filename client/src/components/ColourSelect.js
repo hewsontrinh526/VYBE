@@ -3,14 +3,25 @@ import React, { useEffect, useState } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import ColourSaved from './ColourSaved';
-// import TrackFeatures from './ColourTrackFeats';
+// import ColourPlaylist from './ColourPlaylist';
 
-function ColourSelect() {
+function ColourSelect(props) {
 	// for coloured square buttons
 	const [colour, setColour] = useState('');
 	let [clickCount, setClickCount] = useState(0);
 	let [nextSong, setNextSong] = useState();
+	const [message, setMessage] = React.useState('Hello World');
+	// let msg = 'goodbye';
+	// console.log('props obj:', props);
+	// const playlistInstance = playlistRef.current.getInstance();
 	// const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+	// const prop = JSON.stringify(props);
+
+	// useEffect(() => {
+	// 	if (prop) {
+	// 		console.log(`playlistRef: ${prop}`);
+	// 	}
+	// }, [props]);
 
 	const handleColourSelect = (event) => {
 		event.preventDefault();
@@ -20,7 +31,14 @@ function ColourSelect() {
 		// console.log(`colour: ${colour}`);
 		setClickCount((prevCount) => prevCount + 1);
 		event.target.disabled = true;
+		// const chooseMessage = (message) => {
+		// 	setMessage(message);
 	};
+
+	// const basicFunction = () => {
+	// 	event.preventDefault();
+	// 	props.playNext;
+	// };
 
 	useEffect(() => {
 		if (colour) {
@@ -68,6 +86,7 @@ function ColourSelect() {
 			<div>
 				<ColourSaved newColour={colour} clickCount={clickCount} />
 				{/* <TrackFeatures colour={colour} /> */}
+				{/* <ColourPlaylist handleColourSelect={handleColourSelect} /> */}
 			</div>
 		</div>
 	);
