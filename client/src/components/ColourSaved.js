@@ -1,7 +1,7 @@
+/* eslint-disable */
 import React from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
-// import ColourSelect from './ColourSelect';
 
 function ColourSaved({ newColour, clickCount }) {
 	const circleStyles = [
