@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import './blobs.css';
 import styles from './HomePage.module.css';
 import axios from 'axios';
@@ -9,6 +9,8 @@ function HomePage() {
   const [showPlayVybeModal, setShowPlayVybeModal] = useState(false);
   const [showCreateVybeModal, setShowCreateVybeModal] = useState(false);
   const [spotifyToken, setSpotifyToken] = useState('');
+  const [currentColour, setCurrentColour] = useState({ hsl: { h: 0, s: 0, l: 0 } });
+  const modalContentRef = useRef(null);
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -57,6 +59,15 @@ function HomePage() {
     setShowPlayVybeModal(false);
   }
 
+  const handleColourChange = useCallback((color) => {
+    console.log(`Selected colour: hsl(${color.h}, ${color.s}, ${color.l})`);
+    setCurrentColour(color);
+  }, []);
+
+  const handleConfirmColour = () => {
+    console.log("Confirmed colour:", currentColour);
+  }
+
   return (
     <div className="home-container">
       <header className={styles['header']}>
@@ -70,9 +81,15 @@ function HomePage() {
       </div>
       {showCreateVybeModal && (
         <div className={styles['modal']}>
-          <div className={styles['modal-content']}>
+          <div ref={modalContentRef} className={styles['modal-content']}>
             <span className={styles['close-button']} onClick={() => setShowCreateVybeModal(false)}>&times;</span>
-            <ColourWheel onColourChange={(color) => console.log(`Selected colour: hsl(${color.hsl.h}, ${color.hsl.s}, ${color.hsl.l})`)} />
+            <ColourWheel onColourChange={handleColourChange} containerRef={modalContentRef} />
+            <button
+              onClick={handleConfirmColour}
+              style={{ backgroundColor: `hsl(${currentColour.h}, ${currentColour.s}%, ${currentColour.l}%)` }}
+              className='confirm-button'>
+                Confirm
+              </button>
           </div>
         </div>
       )}
