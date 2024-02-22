@@ -1,11 +1,14 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import './blobs.css';
 import styles from './HomePage.module.css';
 import axios from 'axios';
+import ColourWheel from './ColourWheel';
 
 function HomePage() {
   const [showPlayVybeModal, setShowPlayVybeModal] = useState(false);
-  const setSpotifyToken = useState('');
+  const [showCreateVybeModal, setShowCreateVybeModal] = useState(false);
+  const [spotifyToken, setSpotifyToken] = useState('');
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -41,6 +44,7 @@ function HomePage() {
     // add functionality for create vybe button
   const handleCreateVybe = () => {
     console.log('create vybe button clicked');
+    setShowCreateVybeModal(true);
   };
 
   // show the play vybe modal
@@ -61,9 +65,17 @@ function HomePage() {
 				</div>
       </header>
       <div className={styles['button-container']}>
-        <button className={styles['home-button']} onClick={handleCreateVybe}>create vybe</button>
-        <button className={styles['home-button']} onClick={handlePlayVybe}>play vybe</button>
+        <button className={`${styles['home-button']} ${showCreateVybeModal ? styles['hidden'] : ''}`} onClick={handleCreateVybe}>create vybe</button>
+        <button className={`${styles['home-button']} ${showCreateVybeModal ? styles['hidden'] : ''}`} onClick={handlePlayVybe}>play vybe</button>
       </div>
+      {showCreateVybeModal && (
+        <div className={styles['modal']}>
+          <div className={styles['modal-content']}>
+            <span className={styles['close-button']} onClick={() => setShowCreateVybeModal(false)}>&times;</span>
+            <ColourWheel onColourChange={(color) => console.log(`Selected colour: hsl(${color.hsl.h}, ${color.hsl.s}, ${color.hsl.l})`)} />
+          </div>
+        </div>
+      )}
       {showPlayVybeModal && (
         <div className={styles['modal']}>
           <div className={styles['modal-content']}>

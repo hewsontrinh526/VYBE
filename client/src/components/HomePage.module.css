@@ -11,6 +11,13 @@
   gap: 100px;
 }
 
+ button:hover {
+    /* opacity: 0.5; */
+    filter: brightness(40%);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
 .home-button {
   display: inline-flex;
   align-items: center;
@@ -80,4 +87,8 @@
   border: none;
   background: transparent;
   color: #fff;
+}
+
+.hidden {
+  display: none;
 }
