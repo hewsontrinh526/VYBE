@@ -1,94 +1,72 @@
 /* eslint-disable */
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import ColourSaved from './ColourSaved';
 
-class ColourSelect extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			colour: '',
-			clickCount: 0,
-		};
-	}
+function ColourSelect(props) {
+	const [colour, setColour] = useState('');
+	let [clickCount, setClickCount] = useState(0);
+	let [nextSong, setNextSong] = useState();
+	const [message, setMessage] = React.useState('Hello World');
 
-	handleColourSelect = (event) => {
+	const handleColourSelect = (event) => {
 		event.preventDefault();
 		const selectedColour = event.target.getAttribute('data-colour');
-		this.setState(
-			(prevState) => ({
-				colour: selectedColour,
-				clickCount: prevState.clickCount + 1,
-			}),
-			() => {
-				console.log('test!');
-			}
-		);
+		setColour(selectedColour);
+		setClickCount((prevCount) => prevCount + 1);
 		event.target.disabled = true;
-		this.props.playNext();
+		props.playNext();
 	};
 
-	componentDidUpdate(prevProps, prevState) {
-		if (this.state.colour !== prevState.colour) {
-			console.log(`Colour: ${this.state.colour}`);
+	useEffect(() => {
+		if (colour) {
+			console.log(`Colour: ${colour}`);
 		}
+	}, [colour]);
 
-		if (this.props.playNext !== prevProps.playNext) {
-			console.log('playNext function updated');
-		}
-	}
-
-	render() {
-		const { colour, clickCount } = this.state;
-
-		return (
-			<div>
-				<form>
-					<div className={styles['colours-select']}>
-						<button
-							className={styles['square-1']}
-							data-colour='#DF0000'
-							onClick={this.handleColourSelect}
-						></button>
-						<button
-							className={styles['square-2']}
-							data-colour='#F58501'
-							onClick={this.handleColourSelect}
-						></button>
-						<button
-							className={styles['square-3']}
-							data-colour='#FAFF01'
-							onClick={this.handleColourSelect}
-						></button>
-						<button
-							className={styles['square-4']}
-							data-colour='#5EF105'
-							onClick={this.handleColourSelect}
-						></button>
-						<button
-							className={styles['square-5']}
-							data-colour='#00B2FF'
-							onClick={this.handleColourSelect}
-						></button>
-						<button
-							className={styles['square-6']}
-							data-colour='#BD00FF'
-							onClick={this.handleColourSelect}
-						></button>
-					</div>
-				</form>
-				<div>
-					<ColourSaved
-						newColour={this.state.colour}
-						clickCount={this.state.clickCount}
+	return (
+		<div>
+			<form>
+				<div className={styles['colours-select']}>
+					<button
+						className={styles['square-1']}
+						data-colour='#DF0000'
+						onClick={handleColourSelect}
+					></button>
+					<button
+						className={styles['square-2']}
+						data-colour='#F58501'
+						onClick={handleColourSelect}
+					></button>
+					<button
+						className={styles['square-3']}
+						data-colour='#FAFF01'
+						onClick={handleColourSelect}
+					></button>
+					<button
+						className={styles['square-4']}
+						data-colour='#5EF105'
+						onClick={handleColourSelect}
+					></button>
+					<button
+						className={styles['square-5']}
+						data-colour='#00B2FF'
+						onClick={handleColourSelect}
+					></button>
+					<button
+						className={styles['square-6']}
+						data-colour='#BD00FF'
+						onClick={handleColourSelect}
+					></button>
 					/>
-					{/* <TrackFeatures colour={colour} /> */}
-					{/* <ColourPlaylist handleColourSelect={handleColourSelect} /> */}
 				</div>
+			</form>
+			<div>
+				<ColourSaved newColour={colour} clickCount={clickCount} />
 			</div>
-		);
-	}
+		</div>
+	);
 }
 
 export default ColourSelect;
