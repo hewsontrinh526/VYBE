@@ -10,14 +10,14 @@
 .overlay-image {
   width: auto;
   height: auto;
-  max-width: 30vw;
+  max-width: 70vw;
   max-height: 30vh;
   object-fit: contain;
 }
 
 .button-container {
   position: fixed; /* Fix the position for testing */
-  bottom: 150px; /* Place it 20px from the bottom */
+  bottom: 100px; /* Place it 100px from the bottom */
   left: 50%; /* Center it horizontally */
   transform: translateX(-50%); /* Offset by half its width */
   z-index: 1000; /* Make sure it's on top */
@@ -30,13 +30,14 @@
   padding: 25px 70px;
   background-color: rgba(151, 169, 246, 0.5);
   color: white;
-  font-size: 0.5rem;
+  font-size: 1rem;
   font-family: 'Geom', sans-serif;
   text-decoration: none;
   border-radius: 50px;
   font-weight: bold;
   white-space: nowrap;
   min-width: 70px;
+  max-width: 60vw;
 }
 
 .spotify-logo {
