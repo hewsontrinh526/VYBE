@@ -87,7 +87,7 @@ function HomePage() {
             <button
               onClick={handleConfirmColour}
               style={{ backgroundColor: `hsl(${currentColour.h}, ${currentColour.s}%, ${currentColour.l}%)` }}
-              className='confirm-button'>
+              className={styles['confirm-button']}>
                 Confirm
               </button>
           </div>

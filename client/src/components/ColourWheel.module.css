@@ -1,18 +1,18 @@
 .colour-wheel {
-  position: absolute;
+  position: fixed;
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: auto;
+  width: 300px;
   max-width: 80vw;
   height: auto;
-  max-height: 80vh;
+  max-height: 50vh;
   margin: auto;
 }
 
 @media (min-width: 768px) {
   .colour-wheel {
-    max-width: 550px;
+    max-width: 500px;
     max-height: 60vh;
   }
 }
