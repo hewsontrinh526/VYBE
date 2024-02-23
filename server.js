@@ -38,7 +38,8 @@ app.get('/api/auth/url', (req, res) => {
         'user-read-private', // read access to sub details
         'user-library-read', // read access to user's library
         'user-read-recently-played', // read access to user's recently played
-        'playlist-modify-public' // write access to user's public playlists
+        'playlist-modify-public', // write access to user's public playlists
+        'streaming' // added for web playback sdk
     ].join(' ');
 
     // constructing url for spotify's auth page
