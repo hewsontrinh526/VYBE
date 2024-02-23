@@ -14,10 +14,11 @@ const ColourWheel = ({ onColourChange, containerRef }) => {
       if (containerRef && containerRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
         // 500px on desktop, 300px on mobile
-        const maxCap = window.innerWidth > 768 ? 500 : 300;
+        // const maxCap = window.innerWidth > 768 ? 600 : 300;
         // make the wheel 80% as wide as its container but no more than second value
-        const size = Math.min(containerWidth * 0.8, maxCap);
-        setWheelSize(size);
+        // const size = Math.min(containerWidth * 0.8, maxCap);
+        const newSize = Math.min(containerWidth * 0.8, 300);
+        setWheelSize(newSize);
       }
     };
 
