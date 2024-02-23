@@ -1,7 +1,8 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
+// import PushToDatabase from './ColourQuizData';
 
 function ColourSaved({ newColour, clickCount }) {
 	const circleStyles = [
@@ -24,7 +25,6 @@ function ColourSaved({ newColour, clickCount }) {
 			></div>
 		);
 	}
-
 	return <div className={styles['colours-saved']}>{circles}</div>;
 }
 
