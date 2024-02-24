@@ -2,10 +2,10 @@
 import React, { useEffect, useContext } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
-import { useData } from './ColourDataContext';
+// import { useData } from './ColourDataContext';
 
 function ColourSaved({ newColour, clickCount }) {
-	const { sendDataToDatabase } = useData();
+	// const { sendDataToDatabase } = useData();
 
 	// need this array to have the saved colours displayed
 	let circleStyles = [
