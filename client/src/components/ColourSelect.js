@@ -1,69 +1,33 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import ColourSaved from './ColourSaved';
+import ColourWheel from './ColourWheel';
 
 function ColourSelect(props) {
-	const [colour, setColour] = useState('');
+	// const [colour, setColour] = useState('');
 	let [clickCount, setClickCount] = useState(0);
-	let [nextSong, setNextSong] = useState();
-	const [message, setMessage] = React.useState('Hello World');
+	const [currentColour, setCurrentColour] = useState({
+		hsl: { h: 0, s: 0, l: 0 },
+	});
 
-	const handleColourSelect = (event) => {
-		event.preventDefault();
-		const selectedColour = event.target.getAttribute('data-colour');
-		setColour(selectedColour);
+	const handleColourChange = useCallback((color) => {
+		console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
+		setCurrentColour(color);
 		setClickCount((prevCount) => prevCount + 1);
-		event.target.disabled = true;
 		props.playNext();
-	};
-
-	useEffect(() => {
-		if (colour) {
-			console.log(`Colour: ${colour}`);
-		}
-	}, [colour]);
+	}, []);
 
 	return (
 		<div>
 			<form>
 				<div className={styles['colours-select']}>
-					<button
-						className={styles['square-1']}
-						data-colour='#DF0000'
-						onClick={handleColourSelect}
-					></button>
-					<button
-						className={styles['square-2']}
-						data-colour='#F58501'
-						onClick={handleColourSelect}
-					></button>
-					<button
-						className={styles['square-3']}
-						data-colour='#FAFF01'
-						onClick={handleColourSelect}
-					></button>
-					<button
-						className={styles['square-4']}
-						data-colour='#5EF105'
-						onClick={handleColourSelect}
-					></button>
-					<button
-						className={styles['square-5']}
-						data-colour='#00B2FF'
-						onClick={handleColourSelect}
-					></button>
-					<button
-						className={styles['square-6']}
-						data-colour='#BD00FF'
-						onClick={handleColourSelect}
-					></button>
-					/>
+					<ColourWheel onColourChange={handleColourChange} />
 				</div>
 			</form>
 			<div>
-				<ColourSaved newColour={colour} clickCount={clickCount} />
+				<ColourSaved newColour={currentColour} clickCount={clickCount} />
 			</div>
 		</div>
 	);
