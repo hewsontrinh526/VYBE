@@ -13,6 +13,7 @@ const cors = require('cors');
 const User = require('./models/User');
 const Quiz = require('./models/Quiz');
 const { exchangeCodeForTokens, getUserInfo, calculateTokenExpiry } = require('./spotifyUtils');
+const { getInterpolatedMusicFeatures } = require('./databaseUtils');
 
 // init express app
 const app = express();
@@ -38,8 +39,7 @@ app.get('/api/auth/url', (req, res) => {
         'user-read-private', // read access to sub details
         'user-library-read', // read access to user's library
         'user-read-recently-played', // read access to user's recently played
-        'playlist-modify-public', // write access to user's public playlists
-        'streaming' // added for web playback sdk
+        'playlist-modify-public' // write access to user's public playlists
     ].join(' ');
 
     // constructing url for spotify's auth page
@@ -167,7 +167,7 @@ app.get('/api/token', async (req, res) => {
     }
 });
 
-// Starting the quiz
+/* // Starting the quiz
 app.post('/quiz/start', (req, res) => {
     // Initialise the quiz data in the session
     req.session.quizData = {
@@ -198,7 +198,7 @@ app.post('/quiz/update', (req, res) => {
     // Sends the updated quiz data back to the session
     req.session.quizData = quizData;
     res.send('Quiz updated successfully');
-});
+}); */
 
 
 // Saving quiz to database
@@ -211,6 +211,21 @@ app.post('/quiz/save', async (req, res) => {
     } catch (error) {
         console.error('Error saving quiz:', error);
         res.status(500).send('Error saving quiz');
+    }
+});
+
+// Executing Algorithm
+app.post('/quiz/algo', async (req, res) => {
+    const { spotifyID, selectedHSL } = req.body;
+
+    try {
+        // Call the function with the spotifyID and selectedHSL from the request body
+        const interpolatedFeatures = await getInterpolatedMusicFeatures(spotifyID, selectedHSL);
+        console.log('Interpolated Music Features:', interpolatedFeatures);
+        res.json(interpolatedFeatures);
+    } catch (error) {
+        console.error('Error executing algorithm:', error.message);
+        res.status(500).json({ message: 'Error executing algorithm' });
     }
 });
 
