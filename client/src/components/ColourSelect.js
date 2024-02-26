@@ -13,6 +13,7 @@ function ColourSelect({ playNext }) {
 		hsl: { h: 0, s: 0, l: 0 },
 	});
 	const [arrayColours, setColourArray] = useState([]);
+	const [spotifyID, setSpotifyID] = useState('');
 
 	const handleColourChange = useCallback(
 		(color) => {
@@ -45,6 +46,10 @@ function ColourSelect({ playNext }) {
 			trackIds[index],
 		]);
 
+		const response = axios.get('/user/spotifyID');
+		setSpotifyID(response.data.spotifyID);
+		saveArrays.push({ spotifyID: spotifyID });
+
 		axios
 			.post('/quiz/save', saveArrays)
 			.then((response) => {
@@ -58,6 +63,7 @@ function ColourSelect({ playNext }) {
 				setClickCount(0);
 				setColourArray([]);
 			});
+
 		console.log(`saveArrays: ${saveArrays}`);
 		console.log(`arrayColours: ${arrayColours}`);
 	}
