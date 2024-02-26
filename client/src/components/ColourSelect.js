@@ -19,15 +19,18 @@ function ColourSelect({ playNext }) {
 		(color) => {
 			console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
 			setCurrentColour(color);
-			arrayColours.push({
-				colourHue: color.h,
-				colourSaturation: color.s,
-				colourLightness: color.l,
-			});
+			setColourArray((prevArray) => [
+				...prevArray,
+				{
+					colourHue: color.h,
+					colourSaturation: color.s,
+					colourLightness: color.l,
+				},
+			]);
 			setClickCount((prevCount) => prevCount + 1);
 			playNext();
 		},
-		[playNext, setClickCount, setCurrentColour]
+		[playNext]
 	);
 
 	const handleSortData = () => {};
@@ -74,10 +77,11 @@ function ColourSelect({ playNext }) {
 					setColourArray([]);
 				});
 		}
-	}, [clickCount, spotifyID, arrayColours]);
+		console.log(`arrayColours:`, arrayColours);
+	}, [clickCount, spotifyID, arrayColours, trackIds]);
 
-	console.log(`saveArrays: ${saveArrays}`);
-	console.log(`arrayColours: ${arrayColours}`);
+	// console.log(`saveArrays: ${saveArrays}`);
+	// console.log(`arrayColours: ${arrayColours}`);
 
 	return (
 		<div>
