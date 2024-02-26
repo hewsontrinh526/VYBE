@@ -177,9 +177,11 @@ app.get('/api/token', async (req, res) => {
 
 app.get('/user/spotifyID', async (req, res) => {
 	try {
-		const accessToken = req.query.access_token; // Assuming the access token is passed as a query parameter
-		const spotifyUserId = await getUserProfile(accessToken);
-		res.json({ spotifyId }); // Send the Spotify user ID as JSON response
+		const accessToken =
+			'BQAhyY75Ijq_JSe_UjUaU5s-2tpyQUqJ-XY2wKMtJ61Df8vb_eXYfGbcTBGZZwy8pyB0PuRzkqvntqMdPoVRLXp4ydWQzenkW3r446HkNsuNlaSfAFdC-l-RoPUPx3IXafLQ8rFNI-x0-RxUvnEk6ChKQ_iEMOI243cbkSDMFCmmgpd9A0BEEC4q2y6Wuk7RWs4DXBf-QKUr-8xS3DOtzYGfVsKO';
+		const userInfo = await getUserInfo(accessToken);
+		const spotifyID = userInfo.id;
+		res.json({ spotifyID }); // Send the Spotify user ID as JSON response
 	} catch (error) {
 		console.error('Error:', error);
 		res.status(500).json({ error: 'Internal Server Error' });
