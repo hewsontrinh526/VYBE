@@ -8,6 +8,7 @@ const axios = require('axios');
 const qs = require('qs');
 const path = require('path');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 // models and utility functions
 const User = require('./models/User');
@@ -109,6 +110,13 @@ app.get('/callback', async (req, res) => {
 		await user.save();
 		console.log('User info updated:', user);
 	}
+
+	// send token back to client or set cookie
+	const token = jwt.sign(
+		{ spotifyID: userInfo.id },
+		process.env.SPOTIFY_CLIENT_SECRET
+	);
+
 	// not yet implemented, waiting on quiz schema
 
 	// commenting out while testing wheel
@@ -137,6 +145,17 @@ app.get('/callback', async (req, res) => {
 	// redirect to /app/home for testing purposes
 	// res.redirect('/app/quiz');
 });
+
+function authenticateToken(req, res, next) {
+	const token = req.headers.authorization?.split(' ')[1];
+	if (!token) return res.sendStatus(401);
+
+	jwt.verify(token, process.env.SPOTIFY_CLIENT_SECRET, (err, user) => {
+		if (err) return res.sendStatus(403);
+		req.user = user;
+		next();
+	});
+}
 
 // route handler for GET /api/token in the client cred grant flow
 // gets a token for the Spotify Web Playback SDK
@@ -175,13 +194,9 @@ app.get('/api/token', async (req, res) => {
 	}
 });
 
-app.get('/user/spotifyID', async (req, res) => {
+app.get('/user/spotifyID', authenticateToken, (req, res) => {
 	try {
-		const accessToken =
-			'BQAhyY75Ijq_JSe_UjUaU5s-2tpyQUqJ-XY2wKMtJ61Df8vb_eXYfGbcTBGZZwy8pyB0PuRzkqvntqMdPoVRLXp4ydWQzenkW3r446HkNsuNlaSfAFdC-l-RoPUPx3IXafLQ8rFNI-x0-RxUvnEk6ChKQ_iEMOI243cbkSDMFCmmgpd9A0BEEC4q2y6Wuk7RWs4DXBf-QKUr-8xS3DOtzYGfVsKO';
-		const userInfo = await getUserInfo(accessToken);
-		const spotifyID = userInfo.id;
-		res.json({ spotifyID }); // Send the Spotify user ID as JSON response
+		res.json({ spotifyID: req.user.spotifyID }); // Send the Spotify user ID as JSON response
 	} catch (error) {
 		console.error('Error:', error);
 		res.status(500).json({ error: 'Internal Server Error' });
