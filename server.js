@@ -104,18 +104,17 @@ app.get('/callback', async (req, res) => {
     }
     // not yet implemented, waiting on quiz schema
 
-    /* commenting out while testing wheel
+    // commenting out while testing wheel
     // Check if the user has completed the quiz
     const quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
     if (quizCount > 0) {
         res.redirect('/app/home'); // Redirect to /app/home if quiz is completed
     } else {
         res.redirect('/app/quiz'); // Redirect to /app/quiz if quiz is not completed
-    } catch (error) {
+    /* } catch (error) {
         console.error('Error in quiz count', error);
-        res.status(500).send('Error in quiz count');
+        res.status(500).send('Error in quiz count'); */
     }
-*/
     /* const userQuizCompleted = async (userId) => {
         const quizCount = await Quiz.countDocuments({ userId: userId });
         return quizCount > 0;
@@ -129,7 +128,7 @@ app.get('/callback', async (req, res) => {
     } */
 
     // redirect to /app/home for testing purposes
-    res.redirect('/app/home');
+    // res.redirect('/app/quiz');
 });
 
 // route handler for GET /api/token in the client cred grant flow
