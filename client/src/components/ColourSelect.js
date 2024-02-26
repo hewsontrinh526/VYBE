@@ -40,33 +40,44 @@ function ColourSelect({ playNext }) {
 		{ trackId: '6JY1IdkZGeIcPegKxjSKeb' }, // since u been gone
 	];
 
-	if (clickCount === 5) {
-		const saveArrays = arrayColours.map((item, index) => [
-			item,
-			trackIds[index],
-		]);
+	useEffect(() => {
+		const getSpotifyID = async () => {
+			try {
+				const response = await axios.get('/user/spotifyID');
+				setSpotifyID(response.data.spotifyID);
+			} catch (error) {
+				console.error('getSpotifyId error', error);
+			}
+		};
+		getSpotifyID();
+	}, []);
 
-		const response = axios.get('/user/spotifyID');
-		setSpotifyID(response.data.spotifyID);
-		saveArrays.push({ spotifyID: spotifyID });
+	useEffect(() => {
+		if (clickCount === 5) {
+			const saveArrays = arrayColours.map((item, index) => [
+				item,
+				trackIds[index],
+			]);
+			saveArrays.push({ spotifyID: spotifyID });
 
-		axios
-			.post('/quiz/save', saveArrays)
-			.then((response) => {
-				console.log('Data saved successfully:', response.data);
-			})
-			.catch((error) => {
-				console.error('Error saving data:', error);
-			})
-			.finally(() => {
-				// Reset click count and arrays
-				setClickCount(0);
-				setColourArray([]);
-			});
+			axios
+				.post('/quiz/save', saveArrays)
+				.then((response) => {
+					console.log('Data saved successfully:', response.data);
+				})
+				.catch((error) => {
+					console.error('Error saving data:', error);
+				})
+				.finally(() => {
+					// Reset click count and arrays
+					setClickCount(0);
+					setColourArray([]);
+				});
+		}
+	}, [clickCount, spotifyID, arrayColours]);
 
-		console.log(`saveArrays: ${saveArrays}`);
-		console.log(`arrayColours: ${arrayColours}`);
-	}
+	console.log(`saveArrays: ${saveArrays}`);
+	console.log(`arrayColours: ${arrayColours}`);
 
 	return (
 		<div>
