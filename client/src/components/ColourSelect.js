@@ -18,13 +18,11 @@ function ColourSelect({ playNext }) {
 		(color) => {
 			console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
 			setCurrentColour(color);
-			arrayColours.push(
-				<div
-					colourHue={color.h}
-					colourSaturation={color.s}
-					colourLightness={color.l}
-				></div>
-			);
+			arrayColours.push({
+				colourHue: color.h,
+				colourSaturation: color.s,
+				colourLightness: color.l,
+			});
 			setClickCount((prevCount) => prevCount + 1);
 			playNext();
 		},
@@ -34,11 +32,11 @@ function ColourSelect({ playNext }) {
 	const handleSortData = () => {};
 
 	const trackIds = [
-		'4PTG3Z6ehGkBFwjybzWkR8', // rick roll - e: high v: high
-		'54X78diSLoUDI3joC2bjMz', // purple rain - e: mod v: mod
-		'3M8FzayQWtkvOhqMn2V4T2', // lean on me - e: low v: high
-		'3FAclTFfvUuQYnEsptbK8w', // back to black - e: low v: low
-		'6JY1IdkZGeIcPegKxjSKeb', // since u been gone e: - high v: low
+		{ trackId: '4PTG3Z6ehGkBFwjybzWkR8' }, // rick roll
+		{ trackId: '54X78diSLoUDI3joC2bjMz' }, // purple rain
+		{ trackId: '3M8FzayQWtkvOhqMn2V4T2' }, // lean on me
+		{ trackId: '3FAclTFfvUuQYnEsptbK8w' }, // back to black
+		{ trackId: '6JY1IdkZGeIcPegKxjSKeb' }, // since u been gone
 	];
 
 	if (clickCount === 5) {
