@@ -4,20 +4,65 @@ import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import ColourSaved from './ColourSaved';
 import ColourWheel from './ColourWheel';
+import axios from 'axios';
 
-function ColourSelect(props) {
+function ColourSelect({ playNext }) {
 	// const [colour, setColour] = useState('');
 	let [clickCount, setClickCount] = useState(0);
 	const [currentColour, setCurrentColour] = useState({
 		hsl: { h: 0, s: 0, l: 0 },
 	});
+	const [arrayColours, setColourArray] = useState([]);
 
-	const handleColourChange = useCallback((color) => {
-		console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
-		setCurrentColour(color);
-		setClickCount((prevCount) => prevCount + 1);
-		props.playNext();
-	}, []);
+	const handleColourChange = useCallback(
+		(color) => {
+			console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
+			setCurrentColour(color);
+			arrayColours.push(
+				<div
+					colourHue={color.h}
+					colourSaturation={color.s}
+					colourLightness={color.l}
+				></div>
+			);
+			setClickCount((prevCount) => prevCount + 1);
+			playNext();
+		},
+		[playNext, setClickCount, setCurrentColour]
+	);
+
+	const handleSortData = () => {};
+
+	const trackIds = [
+		'4PTG3Z6ehGkBFwjybzWkR8', // rick roll - e: high v: high
+		'54X78diSLoUDI3joC2bjMz', // purple rain - e: mod v: mod
+		'3M8FzayQWtkvOhqMn2V4T2', // lean on me - e: low v: high
+		'3FAclTFfvUuQYnEsptbK8w', // back to black - e: low v: low
+		'6JY1IdkZGeIcPegKxjSKeb', // since u been gone e: - high v: low
+	];
+
+	if (clickCount === 5) {
+		const saveArrays = arrayColours.map((item, index) => [
+			item,
+			trackIds[index],
+		]);
+
+		axios
+			.post('/quiz/save', saveArrays)
+			.then((response) => {
+				console.log('Data saved successfully:', response.data);
+			})
+			.catch((error) => {
+				console.error('Error saving data:', error);
+			})
+			.finally(() => {
+				// Reset click count and arrays
+				setClickCount(0);
+				setColourArray([]);
+			});
+		console.log(`saveArrays: ${saveArrays}`);
+		console.log(`arrayColours: ${arrayColours}`);
+	}
 
 	return (
 		<div>
