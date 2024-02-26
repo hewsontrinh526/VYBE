@@ -87,9 +87,6 @@ class ColourPlaylist extends Component {
 						allowtransparency='true'
 						allow='encrypted-media'
 					></iframe>
-					<button className={styles['square-7']} onClick={this.playNext}>
-						Next Song
-					</button>
 				</div>
 				<div>
 					<TrackFeatures trackId={trackIds[this.state.currentTrackIndex]} />
