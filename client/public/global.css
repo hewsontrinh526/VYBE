@@ -1,0 +1,5 @@
+@font-face {
+  font-family: 'Geom';
+  src: url('/fonts/Geom-Medium.ttf') format('truetype'),
+  url('/fonts/Geom-Medium.woff') format('woff');
+}
