@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import TrackFeatures from './ColourTrackFeats';
@@ -13,28 +13,11 @@ const trackIds = [
 	'6JY1IdkZGeIcPegKxjSKeb', // since u been gone e: - high v: low
 ];
 
-class ColourPlaylist extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			currentTrackIndex: 0,
-			token:
-				'BQABLWsmV-ZoxcXNPKqjRFHvL_dgYfBM5TiLpfGO_a9vwOfavQQSIfAtq6Wy7rRaxbbUaTSHkg00Q5Cd5-KYAAKEJecBNCo6z8pHsXdBMjdqCDVpUC-PJaV4yPd-tSTUtUHNYBvJNeWl9ME0vfYPyJj19wTDgL8mOkpwV6BddrCxrGNoDtzLixPZI3HdBbPKakgXWRXvmjTQJfJGR0-F9-UnWgQ-',
-		};
-		this.playNext = this.playNext.bind(this);
-	}
-
-	playNext() {
-		this.setState((prevState) => ({
-			currentTrackIndex: (prevState.currentTrackIndex + 1) % trackIds.length,
-		}));
-
-		// console.log('Function ran in Child');
-	}
-
-	componentDidMount() {
+const ColourPlaylist = () => {
+	useEffect(() => {
 		window.onSpotifyWebPlaybackSDKReady = () => {
-			const { token } = this.state;
+			const token =
+				'BQB9w5uDysJc7Hovp5mG_AN-r0M31ADJ9ckXuKqbURHFaTyjsw3Sp1I6Hn9FwfttO3RsLZzDeHsqDFUzdO-HG2JwLgkzxelrVCF6H_IgBpqsV5IsJmO6OgXNLJNr4WvH25ypjisSFKTpbg7snYPxilZtzhPm9HE70CIjhn6OmwaVHrURuARcbkdlnpXCQ_L2aXTCxnzozCdxMdjaffZEoM4URozR';
 			const player = new Spotify.Player({
 				name: 'Web Playback SDK Quick Start Player',
 				getOAuthToken: (cb) => {
@@ -67,34 +50,33 @@ class ColourPlaylist extends Component {
 
 			player.connect();
 		};
-	}
+	});
+	const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
-	// useEffect(() => {
-	// 	console.log(`playlistRef: ${playlistRef}`);
-	// }, [playlistRef]);
+	const playNext = () => {
+		setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % trackIds.length);
+	};
 
-	render() {
-		return (
-			<>
-				<div className={styles['spotify-container']}>
-					<iframe
-						src={`https://open.spotify.com/embed/track/${
-							trackIds[this.state.currentTrackIndex]
-						}`}
-						width='450'
-						height='200'
-						frameBorder='0'
-						allowtransparency='true'
-						allow='encrypted-media'
-					></iframe>
-				</div>
-				<div>
-					<TrackFeatures trackId={trackIds[this.state.currentTrackIndex]} />
-					<ColourSelect playNext={this.playNext} />
-					{/* <ColourSelect setCurrentTrackIndex={setCurrentTrackIndex} /> */}
-				</div>
-			</>
-		);
-	}
-}
+	return (
+		<>
+			<div className={styles['spotify-container']}>
+				<iframe
+					src={`https://open.spotify.com/embed/track/${trackIds[currentTrackIndex]}`}
+					width='100%'
+					height='200'
+					frameBorder='0'
+					allowtransparency='true'
+					allow='encrypted-media'
+				></iframe>
+			</div>
+			<div>
+				<TrackFeatures trackId={trackIds[currentTrackIndex]} />
+				<ColourSelect
+					playNext={playNext}
+					trackId={trackIds[currentTrackIndex]}
+				/>
+			</div>
+		</>
+	);
+};
 export default ColourPlaylist;
