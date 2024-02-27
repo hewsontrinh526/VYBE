@@ -10,9 +10,10 @@ function HomePage() {
   const [showPlayVybeModal, setShowPlayVybeModal] = useState(false);
   const [showCreateVybeModal, setShowCreateVybeModal] = useState(false);
   const [spotifyToken, setSpotifyToken] = useState('');
-  const [currentColour, setCurrentColour] = useState({ hsl: { h: 0, s: 0, l: 0 } });
+  const [currentColour, setCurrentColour] = useState({ hsl: { hue: 0, saturation: 0, lightness: 0 } });
   const modalContentRef = useRef(null);
   const [showLoadingAnimation, setShowLoadingAnimation] = useState(false);
+  const [interpolatedFeatures, setInterpolatedFeatures] = useState(null);
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -62,14 +63,60 @@ function HomePage() {
   }
 
   const handleColourChange = useCallback((color) => {
-    console.log(`Selected colour: hsl(${color.h}, ${color.s}, ${color.l})`);
-    setCurrentColour(color);
+    console.log(`Selected colour: hsl(${color.h}, ${color.s}%, ${color.l}%)`);
+    // Update setCurrentColour to match the expected structure
+    setCurrentColour({
+      hue: color.h,
+      saturation: color.s,
+      lightness: color.l
+    });
   }, []);
 
-  const handleConfirmColour = () => {
+  const handleConfirmColour = async () => {
     console.log("Confirmed colour:", currentColour);
     setShowLoadingAnimation(true); // Show the loading animation upon confirmation
+
+    let operationCompleted = false; // Flag to indicate if the main operation has completed
+    let minimumTimeElapsed = false; // Flag to indicate if the minimum time of 10 seconds has elapsed
+
+    // Function to hide the loading animation if both conditions are met
+    const maybeHideLoading = () => {
+      if (operationCompleted && minimumTimeElapsed) {
+        setShowLoadingAnimation(false);
+      }
+    };
+
+    // Set a timeout to mark the minimum display time of the loading animation as elapsed
+    setTimeout(() => {
+      minimumTimeElapsed = true;
+      maybeHideLoading(); // Attempt to hide the loading animation
+    }, 5000); // 10 seconds
+
+    try {
+      const payload = {
+        spotifyID: '1299798826',
+        selectedHSL: {
+          hue: currentColour.hue,
+          saturation: currentColour.saturation,
+          lightness: currentColour.lightness
+        }
+      };
+
+      // Axios POST request
+      const response = await axios.post('/quiz/algo', payload);
+      const features = response.data;
+
+      setInterpolatedFeatures(features);
+      console.log('Interpolated features:', features);
+    } catch (error) {
+      console.error('Error fetching interpolated features:', error);
+    } finally {
+      operationCompleted = true;
+      maybeHideLoading(); // Attempt to hide the loading animation
+    }
   };
+
+
 
   return (
     <div className="home-container">

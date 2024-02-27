@@ -18,7 +18,7 @@ const {
 	getUserInfo,
 	calculateTokenExpiry,
 } = require('./spotifyUtils');
-const { getInterpolatedMusicFeatures } = require('./databaseUtils');
+const { fetchUserProfile, findClosestColour } = require('./algorithm');
 
 // init express app
 const app = express();
@@ -253,20 +253,27 @@ app.post('/quiz/save', async (req, res) => {
 
 // Executing Algorithm
 app.post('/quiz/algo', async (req, res) => {
-	const { spotifyID, selectedHSL } = req.body;
+    const { spotifyID, selectedHSL } = req.body;
 
-	try {
-		// Call the function with the spotifyID and selectedHSL from the request body
-		const interpolatedFeatures = await getInterpolatedMusicFeatures(
-			spotifyID,
-			selectedHSL
-		);
-		console.log('Interpolated Music Features:', interpolatedFeatures);
-		res.json(interpolatedFeatures);
-	} catch (error) {
-		console.error('Error executing algorithm:', error.message);
-		res.status(500).json({ message: 'Error executing algorithm' });
-	}
+    try {
+        // Fetch the user profile using the Spotify ID
+        const userProfile = await fetchUserProfile(spotifyID);
+
+        // If no user profits is foudn, send an appropriate response
+        if (!userProfile) {
+            return res.status(404).json({ message: 'User profile not found' });
+        }
+
+        // Calculate the interpolated music features based on the closest colour
+        const interpolatedFeatures = await findClosestColour(userProfile, selectedHSL);
+        console.log('Interpolated Music Features:', interpolatedFeatures);
+
+        // Send the interpolated music features as a response
+        res.json(interpolatedFeatures);
+    } catch (error) {
+        console.error('Error executing algorithm:', error.message);
+        res.status(500).json({ message: 'Error executing algorithm' });
+    }
 });
 
 // fallback to serve react app for any other routes
