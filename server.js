@@ -147,7 +147,9 @@ app.get('/callback', async (req, res) => {
 });
 
 function authenticateToken(req, res, next) {
-	const token = req.headers.authorization?.split(' ')[1];
+	const token =
+		(req.headers.authorization && req.headers.authorization.split(' ')[1]) ||
+		null;
 	if (!token) return res.sendStatus(401);
 
 	jwt.verify(token, process.env.SPOTIFY_CLIENT_SECRET, (err, user) => {

@@ -46,7 +46,11 @@ function ColourSelect({ playNext }) {
 	useEffect(() => {
 		const getSpotifyID = async () => {
 			try {
-				const response = await axios.get('/user/spotifyID');
+				const response = await axios.get('/user/spotifyID', {
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				});
 				setSpotifyID(response.data.spotifyID);
 			} catch (error) {
 				console.error('getSpotifyId error', error);
@@ -57,14 +61,22 @@ function ColourSelect({ playNext }) {
 
 	useEffect(() => {
 		if (clickCount === 5) {
-			const saveArrays = arrayColours.map((item, index) => [
-				item,
-				trackIds[index],
-			]);
-			saveArrays.push({ spotifyID: spotifyID });
+			const songs = arrayColours.map((item, index) => ({
+				trackID: trackIds[index].trackId,
+				colourHue: item.colourHue,
+				colourSaturation: item.colourSaturation,
+				colourLightness: item.colourLightness,
+			}));
+
+			// const spotifyID = 'x70mz3mucf0xukuqjqpv3tepg';
+
+			const quizData = {
+				spotifyID: spotifyID,
+				songs: songs,
+			};
 
 			axios
-				.post('/quiz/save', saveArrays)
+				.post('/quiz/save', quizData)
 				.then((response) => {
 					console.log('Data saved successfully:', response.data);
 				})
