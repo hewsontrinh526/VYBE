@@ -140,7 +140,7 @@ function HomePage() {
                 <ColourWheel onColourChange={handleColourChange} containerRef={modalContentRef} />
                 <button
                   onClick={handleConfirmColour}
-                  style={{ backgroundColor: `hsl(${currentColour.h}, ${currentColour.s}%, ${currentColour.l}%)` }}
+                  style={{ backgroundColor: `hsl(${currentColour.hue}, ${currentColour.saturation}%, ${currentColour.lightness}%)` }}
                   className={styles['confirm-button']}>
                   Confirm
                 </button>
