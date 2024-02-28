@@ -15,23 +15,20 @@ function ColourSelect({ playNext }) {
 	const [arrayColours, setColourArray] = useState([]);
 	const [spotifyID, setSpotifyID] = useState('');
 
-	const handleColourChange = useCallback(
-		(color) => {
-			console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
-			setCurrentColour(color);
-			setColourArray((prevArray) => [
-				...prevArray,
-				{
-					colourHue: color.h,
-					colourSaturation: color.s,
-					colourLightness: color.l,
-				},
-			]);
-			setClickCount((prevCount) => prevCount + 1);
-			playNext();
-		},
-		[playNext]
-	);
+	const handleColourChange = useCallback((color) => {
+		console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
+		setCurrentColour(color);
+		setColourArray((prevArray) => [
+			...prevArray,
+			{
+				colourHue: color.h,
+				colourSaturation: color.s,
+				colourLightness: color.l,
+			},
+		]);
+		setClickCount((prevCount) => prevCount + 1);
+		playNext();
+	}, []);
 
 	const handleSortData = () => {};
 
