@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
 import ColourSaved from './ColourSaved';
@@ -7,13 +8,15 @@ import ColourWheel from './ColourWheel';
 import axios from 'axios';
 
 function ColourSelect({ playNext }) {
-	// const [colour, setColour] = useState('');
 	let [clickCount, setClickCount] = useState(0);
 	const [currentColour, setCurrentColour] = useState({
 		hsl: { h: 0, s: 0, l: 0 },
 	});
 	const [arrayColours, setColourArray] = useState([]);
 	const [spotifyID, setSpotifyID] = useState('');
+	const navigate = useNavigate();
+	const accessToken = localStorage.getItem('accessToken');
+	console.log(accessToken);
 
 	const handleColourChange = useCallback((color) => {
 		console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
@@ -30,8 +33,6 @@ function ColourSelect({ playNext }) {
 		playNext();
 	}, []);
 
-	const handleSortData = () => {};
-
 	const trackIds = [
 		{ trackId: '4PTG3Z6ehGkBFwjybzWkR8' }, // rick roll
 		{ trackId: '54X78diSLoUDI3joC2bjMz' }, // purple rain
@@ -43,6 +44,7 @@ function ColourSelect({ playNext }) {
 	useEffect(() => {
 		const getSpotifyID = async () => {
 			try {
+				// const accessToken = localStorage.getItem('accessToken');
 				const response = await axios.get('/user/spotifyID', {
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -58,6 +60,10 @@ function ColourSelect({ playNext }) {
 
 	useEffect(() => {
 		if (clickCount === 5) {
+			setTimeout(() => {
+				navigate('/app/loading');
+			}, 2000);
+
 			const songs = arrayColours.map((item, index) => ({
 				trackID: trackIds[index].trackId,
 				colourHue: item.colourHue,
@@ -87,20 +93,19 @@ function ColourSelect({ playNext }) {
 				});
 		}
 		console.log(`arrayColours:`, arrayColours);
-	}, [clickCount, spotifyID, arrayColours, trackIds]);
-
-	// console.log(`saveArrays: ${saveArrays}`);
-	// console.log(`arrayColours: ${arrayColours}`);
+	}, [clickCount, navigate, arrayColours]);
 
 	return (
 		<div>
-			<form>
-				<div className={styles['colours-select']}>
-					<ColourWheel onColourChange={handleColourChange} />
-				</div>
-			</form>
 			<div>
-				<ColourSaved newColour={currentColour} clickCount={clickCount} />
+				<form>
+					<div className={styles['colours-select']}>
+						<ColourWheel onColourChange={handleColourChange} />
+					</div>
+				</form>
+				<div>
+					<ColourSaved newColour={currentColour} clickCount={clickCount} />
+				</div>
 			</div>
 		</div>
 	);
