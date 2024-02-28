@@ -76,6 +76,16 @@ app.get('/api/auth/url', (req, res) => {
     }
 }) */
 
+// refreshes the new access and refresh tokens for the user
+async function updateTokensForUser(user, tokens) {
+	user.accessToken = tokens.access_token;
+	if (tokens.refresh_token) {
+		user.refreshToken = tokens.refresh_token;
+	}
+	user.tokenExpiry = calculateTokenExpiry(tokens.expires_in);
+	await user.save();
+}
+
 // commenting out to test the simple callback above works
 // route for spotify callback
 app.get('/callback', async (req, res) => {
@@ -111,40 +121,34 @@ app.get('/callback', async (req, res) => {
 		console.log('User info updated:', user);
 	}
 
+	/*
 	// send token back to client or set cookie
 	const token = jwt.sign(
 		{ spotifyID: userInfo.id },
 		process.env.SPOTIFY_CLIENT_SECRET
 	);
+	*/
 
-	// not yet implemented, waiting on quiz schema
-
-	// commenting out while testing wheel
+/*
+	// commenting out while testing front end redirection
 	// Check if the user has completed the quiz
 	const quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
 	if (quizCount > 0) {
 		res.redirect('/app/home'); // Redirect to /app/home if quiz is completed
 	} else {
 		res.redirect('/app/quiz'); // Redirect to /app/quiz if quiz is not completed
-		/* } catch (error) {
-        console.error('Error in quiz count', error);
-        res.status(500).send('Error in quiz count'); */
 	}
-	/* const userQuizCompleted = async (userId) => {
-        const quizCount = await Quiz.countDocuments({ userId: userId });
-        return quizCount > 0;
-    }
-    // not yet implemented, waiting on quiz schema
-    const hasCompletedQuiz = await userQuizCompleted(user._id);
-    if (hasCompletedQuiz) {
-        res.redirect('/app/home');
-    } else {
-        res.redirect('/app/quiz');
-    } */
+	*/
+	quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
+	const quizCompleted = quizCount > 0;
 
-	// redirect to /app/home for testing purposes
-	// res.redirect('/app/quiz');
-});
+	const redirectUri = `http://localhost:3500/app/spotify-callback?access_token=${spotifyTokens.access_token}&quiz_completed=${quizCompleted}`;
+	/* res.json ({
+		quizCompleted: quizCompleted,
+		accessToken: spotifyTokens.access_token,
+		*/
+	res.redirect(redirectUri);
+	});
 
 function authenticateToken(req, res, next) {
 	const token =
