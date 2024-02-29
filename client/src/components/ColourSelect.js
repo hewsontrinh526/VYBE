@@ -13,10 +13,10 @@ function ColourSelect({ playNext }) {
 		hsl: { h: 0, s: 0, l: 0 },
 	});
 	const [arrayColours, setColourArray] = useState([]);
-	const [spotifyID, setSpotifyID] = useState('');
+	// const [spotifyID, setSpotifyID] = useState('');
 	const navigate = useNavigate();
-	const accessToken = localStorage.getItem('accessToken');
-	console.log(accessToken);
+	const spotifyID = localStorage.getItem('spotifyID');
+	console.log(spotifyID);
 
 	const handleColourChange = useCallback((color) => {
 		console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
@@ -45,12 +45,9 @@ function ColourSelect({ playNext }) {
 		const getSpotifyID = async () => {
 			try {
 				// const accessToken = localStorage.getItem('accessToken');
-				const response = await axios.get('/user/spotifyID', {
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				});
+				const response = await axios.get('/user/spotifyID');
 				setSpotifyID(response.data.spotifyID);
+				console.log(spotifyID);
 			} catch (error) {
 				console.error('getSpotifyId error', error);
 			}
@@ -62,7 +59,7 @@ function ColourSelect({ playNext }) {
 		if (clickCount === 5) {
 			setTimeout(() => {
 				navigate('/app/loading');
-			}, 2000);
+			}, 3000);
 
 			const songs = arrayColours.map((item, index) => ({
 				trackID: trackIds[index].trackId,
