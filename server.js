@@ -142,7 +142,7 @@ app.get('/callback', async (req, res) => {
 	quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
 	const quizCompleted = quizCount > 0;
 
-	const redirectUri = `http://localhost:3500/app/spotify-callback?access_token=${spotifyTokens.access_token}&quiz_completed=${quizCompleted}`;
+	const redirectUri = `http://localhost:3500/app/spotify-callback?access_token=${spotifyTokens.access_token}&spotify_id=${userInfo.id}&quiz_completed=${quizCompleted}`;
 	/* res.json ({
 		quizCompleted: quizCompleted,
 		accessToken: spotifyTokens.access_token,
