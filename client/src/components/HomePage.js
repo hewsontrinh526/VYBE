@@ -14,6 +14,8 @@ function HomePage() {
   const modalContentRef = useRef(null);
   const [showLoadingAnimation, setShowLoadingAnimation] = useState(false);
   const [interpolatedFeatures, setInterpolatedFeatures] = useState(null);
+  const [playlistUrl, setPlaylistUrl] = useState('');
+
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -92,11 +94,12 @@ function HomePage() {
       maybeHideLoading(); // Attempt to hide the loading animation
     }, 5000); // 10 seconds
 
-    const spotifyIDUser = localStorage.getItem('spotifyID');
+    const userSpotifyID = localStorage.getItem('spotifyID');
+    const userAccessToken = localStorage.getItem('accessToken');
 
     try {
       const payload = {
-        spotifyID: spotifyIDUser,
+        spotifyID: userSpotifyID,
         selectedHSL: {
           hue: currentColour.hue,
           saturation: currentColour.saturation,
@@ -107,9 +110,25 @@ function HomePage() {
       // Axios POST request
       const response = await axios.post('/quiz/algo', payload);
       const features = response.data;
-
       setInterpolatedFeatures(features);
       console.log('Interpolated features:', features);
+      axios.post('/playlist/create', {
+        spotifyID: userSpotifyID,
+        accessToken: userAccessToken,
+        features: {
+          energy: features.energy,
+          danceability: features.danceability,
+          valence: features.valence
+        }
+      })
+        .then(response => {
+          const playlistId = response.data.playlistId;
+          console.log('Playlist ID:', playlistId);
+          const createdPlaylistUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
+          setPlaylistUrl(createdPlaylistUrl); // Update the state with the new URL
+          setShowPlayVybeModal(true);
+        })
+        .catch(error => console.error('Error creating playlist:', error));
     } catch (error) {
       console.error('Error fetching interpolated features:', error);
     } finally {
@@ -154,7 +173,7 @@ function HomePage() {
               <div className={styles['modal-content']}>
                 <span className={styles['close-button']} onClick={handleClosePlayVybeModal}>&times;</span>
                 <iframe
-                  src="https://open.spotify.com/embed/playlist/5OAu0ZRy6pWVnPaSarvdzs"
+                  src={playlistUrl} // Use the state variable here
                   allow="encrypted-media"
                   name="spotify_iframe"
                   className={styles['spotify-iframe']}

@@ -19,6 +19,7 @@ const {
 	calculateTokenExpiry,
 } = require('./spotifyUtils');
 const { fetchUserProfile, findClosestColour, fetchUserAccessToken } = require('./algorithm');
+const { createPlaylist } = require('./playlist');
 
 // init express app
 const app = express();
@@ -46,6 +47,7 @@ app.get('/api/auth/url', (req, res) => {
 		'user-library-read', // read access to user's library
 		'user-read-recently-played', // read access to user's recently played
 		'playlist-modify-public', // write access to user's public playlists
+        'playlist-modify-private', // write access to user's private playlists
 	].join(' ');
 
 	// constructing url for spotify's auth page
@@ -284,6 +286,13 @@ app.post('/quiz/algo', async (req, res) => {
 });
 
 app.post('/playlist/create/', async (req, res) => {
+    try {
+        const result = await createPlaylist(req.body); // Pass the entire body to the function
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error creating playlist:', error);
+        res.status(500).send('Error creating playlist');
+    }
 });
 
 // fallback to serve react app for any other routes

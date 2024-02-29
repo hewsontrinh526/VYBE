@@ -19,9 +19,9 @@ const fetchTrackFeatures = async (trackId, userAccessToken) => {
             danceability: trackFeatures.danceability,
             valence: trackFeatures.valence,
         };
+        // console.log(musicFeatures);
         return musicFeatures;
         // Now, 'musicFeatures' contains the data in the specified format:
-        console.log(musicFeatures);
     } catch (error) {
         console.error(`Error fetching track features: ${error.message}`);
     }
