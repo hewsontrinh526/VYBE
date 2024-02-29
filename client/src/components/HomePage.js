@@ -92,7 +92,7 @@ function HomePage() {
     setTimeout(() => {
       minimumTimeElapsed = true;
       maybeHideLoading(); // Attempt to hide the loading animation
-    }, 5000); // 10 seconds
+    }, 5000); // Note: Adjusted to 5 seconds based on your setTimeout, but you mentioned 10 seconds in the comment
 
     const userSpotifyID = localStorage.getItem('spotifyID');
     const userAccessToken = localStorage.getItem('accessToken');
@@ -103,41 +103,50 @@ function HomePage() {
         selectedHSL: {
           hue: currentColour.hue,
           saturation: currentColour.saturation,
-          lightness: currentColour.lightness
-        }
+          lightness: currentColour.lightness,
+        },
       };
 
-      // Axios POST request
-      const response = await axios.post('/quiz/algo', payload);
-      const features = response.data;
+      // First Axios POST request
+      const featuresResponse = await axios.post('/quiz/algo', payload);
+      const features = featuresResponse.data;
       setInterpolatedFeatures(features);
       console.log('Interpolated features:', features);
-      axios.post('/playlist/create', {
+
+      // Second Axios POST request using async/await
+      const createResponse = await axios.post('/playlist/create', {
         spotifyID: userSpotifyID,
         accessToken: userAccessToken,
-        features: {
-          energy: features.energy,
-          danceability: features.danceability,
-          valence: features.valence
-        }
-      })
-        .then(response => {
-          const playlistId = response.data.playlistId;
-          console.log('Playlist ID:', playlistId);
-          const createdPlaylistUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
-          setPlaylistUrl(createdPlaylistUrl); // Update the state with the new URL
-          setShowPlayVybeModal(true);
-        })
-        .catch(error => console.error('Error creating playlist:', error));
+        features: features,
+      });
+      const playlistId = createResponse.data.playlistId;
+      console.log('Playlist ID:', playlistId);
+
+      // Preparing the data in the correct format for saving
+      const savePlaylistPayload = {
+        spotifyID: userSpotifyID,
+        playlist: {
+          playlistID: playlistId,
+          colourHue: currentColour.hue,
+          colourSaturation: currentColour.saturation,
+          colourLightness: currentColour.lightness,
+        },
+      };
+
+      // Third Axios POST request to save the playlist data
+      await axios.post('/playlist/save/', savePlaylistPayload);
+      console.log('Playlist saved successfully');
+
+      const createdPlaylistUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
+      setPlaylistUrl(createdPlaylistUrl); // Update the state with the new URL
+      setShowPlayVybeModal(true);
     } catch (error) {
-      console.error('Error fetching interpolated features:', error);
+      console.error('An error occurred:', error);
     } finally {
       operationCompleted = true;
       maybeHideLoading(); // Attempt to hide the loading animation
     }
   };
-
-
 
   return (
     <div className="home-container">

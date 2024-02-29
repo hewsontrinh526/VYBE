@@ -13,6 +13,7 @@ const jwt = require('jsonwebtoken');
 // models and utility functions
 const User = require('./models/User');
 const Quiz = require('./models/Quiz');
+const Playlist = require('./models/Playlist');
 const {
 	exchangeCodeForTokens,
 	getUserInfo,
@@ -292,6 +293,43 @@ app.post('/playlist/create/', async (req, res) => {
     } catch (error) {
         console.error('Error creating playlist:', error);
         res.status(500).send('Error creating playlist');
+    }
+});
+
+app.post('/playlist/save/', async (req, res) => {
+    const { spotifyID, playlist } = req.body // Extracts the SpotifyID and playlist data from request
+
+    try {
+        // Attempts to find any existing user in the playlist collection
+        const userData = await Playlist.findOne({ spotifyID: spotifyID });
+
+        if (userData) {
+            const newPlaylistEntry = {
+                playlistID: playlist.playlistID,
+                colourHue: playlist.colourHue,
+                colourSaturation: playlist.colourSaturation,
+                colourLightness: playlist.colourLightness
+            };
+
+            userData.playlist.push(newPlaylistEntry); // If found, add the new playlist to the existing user's playlist array
+            await userData.save(); // Save the updated user data
+            res.send('Playlist saved successfully');
+        } else {
+            let newPlaylist = new Playlist({
+                spotifyID: spotifyID,
+                playlist: [{
+                    playlistID: playlist.playlistID,
+                    colourHue: playlist.colourHue,
+                    colourSaturation: playlist.colourSaturation,
+                    colourLightness: playlist.colourLightness
+                }]
+            });
+            await newPlaylist.save();
+            res.send('New playlist saved successfully');
+        }
+    } catch (error) {
+        console.error('Error saving playlist:', error);
+        res.status(500).send('Error saving playlist');
     }
 });
 
