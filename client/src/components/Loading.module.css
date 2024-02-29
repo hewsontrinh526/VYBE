@@ -1,36 +1,36 @@
 @keyframes quiet {
     0%, 100% {
-        height: 30%;
+        height: 60%;
     }
     25%, 75% {
-        height: 40%;
+        height: 80%;
     }
     50% {
-        height: 15%;
+        height: 30%;
     }
 }
 
 @keyframes normal {
     0%, 100% {
-        height: 35%;
+        height: 70%;
     }
     25%, 75% {
-        height: 50%;
+        height: 100%;
     }
     50% {
-        height: 15%;
+        height: 30%;
     }
 }
 
 @keyframes loud {
     0%, 100% {
-        height: 45%;
+        height: 90%;
     }
     25%, 75% {
-        height: 60%;
+        height: 120%;
     }
     50% {
-        height: 15%;
+        height: 30%;
     }
 }
 
@@ -63,6 +63,7 @@
     justify-content: flex-end;
 }
 
+/*
 .boxContainerTop .box .topSemi {
     width: 100%;
     height: 16px;
@@ -76,16 +77,16 @@
     border-radius: 0 0 50% 50% / 0 0 100% 100%;
     background: #F6FAF9;
 }
+*/
 
 .boxContainerTop .box .centreRect {
     position: relative;
     /* transform: scaleY(0.4); */
-    height: 100%;
+    height: 80vh;
     width: var(--boxSize);
     background: #F6FAF9;
-    animation-duration: 1.2s;
-    animation-timing-function: ease;
-    animation-iteration-count: infinite;
+    border-radius: 15px;
+    animation: 1.2s ease-in-out infinite;
     transform-origin: bottom;
 }
 
@@ -120,6 +121,8 @@
     opacity: 50%;
 }
 
+/*
+
 .boxContainerBottom .box .topSemi {
     width: 100%;
     height: 16px;
@@ -135,10 +138,10 @@
     background: #F6FAF9;
     opacity: 12%;
 }
+*/
 
 .boxContainerBottom .box .centreRect{
     position: relative;
-    /* transform: scaleY(0.4); */
     height: 100%;
     width: var(--boxSize);
     background: linear-gradient(to top, #FFFFFF, #000000);
@@ -147,6 +150,7 @@
     animation-timing-function: ease;
     animation-iteration-count: infinite;
     transform-origin: top;
+    border-radius: 15px;
 }
 
 .boxContainerBottom .box1 .centreRect{

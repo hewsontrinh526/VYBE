@@ -31,9 +31,7 @@ const LoadingAnimation = () => {
 
       return (
         <div key={index} className={`${styles.box} ${styles[`box${index + 1}`]}`}>
-          <div className={styles['topSemi']}></div>
           <div className={styles['centreRect']} style={animationStyle}></div>
-          <div className={styles['bottomSemi']}></div>
         </div>
       );
     });
