@@ -18,7 +18,7 @@ const {
 	getUserInfo,
 	calculateTokenExpiry,
 } = require('./spotifyUtils');
-const { fetchUserProfile, findClosestColour } = require('./algorithm');
+const { fetchUserProfile, findClosestColour, fetchUserAccessToken } = require('./algorithm');
 
 // init express app
 const app = express();
@@ -262,14 +262,17 @@ app.post('/quiz/algo', async (req, res) => {
     try {
         // Fetch the user profile using the Spotify ID
         const userProfile = await fetchUserProfile(spotifyID);
+        const userAccessToken = await fetchUserAccessToken(spotifyID);
 
         // If no user profits is foudn, send an appropriate response
         if (!userProfile) {
             return res.status(404).json({ message: 'User profile not found' });
+        } else if (!userAccessToken) {
+            return res.status(404).json({ message: 'User access token not found' });
         }
 
         // Calculate the interpolated music features based on the closest colour
-        const interpolatedFeatures = await findClosestColour(userProfile, selectedHSL);
+        const interpolatedFeatures = await findClosestColour(userProfile, selectedHSL, userAccessToken);
         console.log('Interpolated Music Features:', interpolatedFeatures);
 
         // Send the interpolated music features as a response
@@ -278,6 +281,9 @@ app.post('/quiz/algo', async (req, res) => {
         console.error('Error executing algorithm:', error.message);
         res.status(500).json({ message: 'Error executing algorithm' });
     }
+});
+
+app.post('/playlist/create/', async (req, res) => {
 });
 
 // fallback to serve react app for any other routes

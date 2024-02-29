@@ -92,9 +92,11 @@ function HomePage() {
       maybeHideLoading(); // Attempt to hide the loading animation
     }, 5000); // 10 seconds
 
+    const spotifyIDUser = localStorage.getItem('spotifyID');
+
     try {
       const payload = {
-        spotifyID: '1299798826',
+        spotifyID: spotifyIDUser,
         selectedHSL: {
           hue: currentColour.hue,
           saturation: currentColour.saturation,

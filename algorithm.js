@@ -1,16 +1,14 @@
 const axios = require('axios');
 const Quiz = require("./models/Quiz");
-
-// Hardcoded access token
-const token = 'BQCTSW9LsSWyI_qgqKH02jUweiPAXtP6rniA8w5GskAF8uEjlGitID9y2KKJPszG_57Sl5l7wgs2d8_F_Phq1WZrhd6k4FP-D36anYbxdf0oe9dNoUY'
+const User = require("./models/User");
 
 // This works as expected. Access token needs to be updated though
-const fetchTrackFeatures = async (trackId) => {
+const fetchTrackFeatures = async (trackId, userAccessToken) => {
     const url = `https://api.spotify.com/v1/audio-features/${trackId}`;
     try {
         const response = await axios.get(url, {
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${userAccessToken}`,
             },
         });
         const trackFeatures = response.data;
@@ -46,6 +44,23 @@ async function fetchUserProfile(spotifyID) {
     }
 }
 
+// Fetches the user profile access token from the user table
+async function fetchUserAccessToken(spotifyID) {
+    try {
+        const user = await User.findOne({ spotifyID: spotifyID });
+        if (user) {
+            console.log('Access token fetched successfully');
+            return user.accessToken; // Return the access token directly
+        } else {
+            console.log('User not found');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching access token:', error);
+        return null;
+    }
+}
+
 // Calculates the Euclidean distance between two colours
 function colourDistance(hsl1, hsl2) {
     let hueDistance = Math.min(Math.abs(hsl1.hue - hsl2.hue), 360 - Math.abs(hsl1.hue - hsl2.hue));
@@ -56,7 +71,7 @@ function colourDistance(hsl1, hsl2) {
 }
 
 // Determines the two closest colours to the selected colour and calculates the weighted sum of their music features
-async function findClosestColour(userProfile, selectedHSL) {
+async function findClosestColour(userProfile, selectedHSL, userAccessToken) {
     const distances = userProfile.map(profile => {
         const hsl = {
             hue: profile.colourHue,
@@ -68,10 +83,11 @@ async function findClosestColour(userProfile, selectedHSL) {
             trackID: profile.trackID
         };
     });
+
     const twoClosest = distances.sort((a, b) => a.distance - b.distance).slice(0, 2);
 
     // Use an array to store the promises
-    const trackFeaturesPromises = twoClosest.map(closest => fetchTrackFeatures(closest.trackID));
+    const trackFeaturesPromises = twoClosest.map(closest => fetchTrackFeatures(closest.trackID, userAccessToken));
 
     // Wait for all promises to resolve
     const trackFeatures = await Promise.all(trackFeaturesPromises);
@@ -104,9 +120,9 @@ async function findClosestColour(userProfile, selectedHSL) {
     if (totalWeight === 0) totalWeight = 1;
 
     const averageFeatures = {
-        energy: (weightedSumFeatures.energy / totalWeight).toPrecision(1),
-        danceability: (weightedSumFeatures.danceability / totalWeight).toPrecision(1),
-        valence: (weightedSumFeatures.valence / totalWeight).toPrecision(1)
+        energy: (weightedSumFeatures.energy / totalWeight).toPrecision(3),
+        danceability: (weightedSumFeatures.danceability / totalWeight).toPrecision(3),
+        valence: (weightedSumFeatures.valence / totalWeight).toPrecision(3)
     }
 
     // console.log(averageFeatures);
@@ -114,25 +130,4 @@ async function findClosestColour(userProfile, selectedHSL) {
     return averageFeatures;
 }
 
-/* async function main() {
-    const userProfile = await fetchUserProfile('1299798826');
-    const userTrackIDs = userProfile.map((song) => song.trackID);
-    const selectedHSL = {
-        hue: 100,
-        saturation: 45,
-        lightness: 75,
-    };
-    //console.log(userProfile);
-    //console.log(userTrackIDs);
-    //for (let i = 0; i < userTrackIDs.length; i++) {
-        //await fetchTrackFeatures(userTrackIDs[i]);
-    //}
-    //console.log(selectedHSL);
-    const closestColourResult = await findClosestColour(userProfile, selectedHSL);
-    console.log(closestColourResult); // This will now log the result correctly
-    mongoose.connection.close();
-}
-
-main(); */
-
-module.exports = { fetchUserProfile, findClosestColour };
+module.exports = { fetchUserProfile, findClosestColour, fetchUserAccessToken };
