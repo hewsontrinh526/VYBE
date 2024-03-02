@@ -9,12 +9,14 @@ import LoadingAnimation from './Loading';
 function HomePage() {
   const [showPlayVybeModal, setShowPlayVybeModal] = useState(false);
   const [showCreateVybeModal, setShowCreateVybeModal] = useState(false);
+  const [showSpotifyIframeModal, setShowSpotifyIframeModal] = useState(false);
   const [spotifyToken, setSpotifyToken] = useState('');
   const [currentColour, setCurrentColour] = useState({ hsl: { hue: 0, saturation: 0, lightness: 0 } });
   const modalContentRef = useRef(null);
   const [showLoadingAnimation, setShowLoadingAnimation] = useState(false);
   const [interpolatedFeatures, setInterpolatedFeatures] = useState(null);
   const [playlistUrl, setPlaylistUrl] = useState('');
+  const [playlists, setPlaylists] = useState([]);
 
 
   useEffect(() => {
@@ -55,13 +57,35 @@ function HomePage() {
   };
 
   // show the play vybe modal
-  const handlePlayVybe = () => {
+  const handlePlayVybe = async () => {
     console.log('play vybe button clicked');
-    setShowPlayVybeModal(true);
+    setShowLoadingAnimation(true); // Opens loading screen whilst fetching data
+
+    const userSpotifyID = localStorage.getItem('spotifyID');
+
+    try {
+      const response = await axios.post('/playlist/fetch', { spotifyID: userSpotifyID });
+      console.log(response.data); // Log the response data to verify its structure
+      setPlaylists(response.data);
+      setShowPlayVybeModal(true);
+    } catch (error) {
+      console.log('Error fetching playlists:', error);
+    } finally {
+      setShowLoadingAnimation(false);
+    }
   };
-  // close the play vybe modal
-  const handleClosePlayVybeModal = () => {
-    setShowPlayVybeModal(false);
+
+
+  const handlePlaylistClick = (playlistID) => {
+    const playlistBaseUrl = "https://open.spotify.com/embed/playlist/";
+    setPlaylistUrl(`${playlistBaseUrl}${playlistID}`);
+    setShowSpotifyIframeModal(true);
+  };
+
+
+  const handleSpotifyIframe = () => {
+    console.log('spotify iframe button clicked');
+    setShowSpotifyIframeModal(true);
   }
 
   const handleColourChange = useCallback((color) => {
@@ -139,13 +163,17 @@ function HomePage() {
 
       const createdPlaylistUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
       setPlaylistUrl(createdPlaylistUrl); // Update the state with the new URL
-      setShowPlayVybeModal(true);
+      setShowSpotifyIframeModal(true);
     } catch (error) {
       console.error('An error occurred:', error);
     } finally {
       operationCompleted = true;
       maybeHideLoading(); // Attempt to hide the loading animation
     }
+  };
+
+  const handleShowVybe = () => {
+    setShowVybeModal(true); // Show the modal when the button is clicked
   };
 
   return (
@@ -160,8 +188,8 @@ function HomePage() {
             </div>
           </header>
           <div className={styles['button-container']}>
-            <button className={`${styles['home-button']} ${showCreateVybeModal ? styles['hidden'] : ''}`} onClick={handleCreateVybe}>create vybe</button>
-            <button className={`${styles['home-button']} ${showCreateVybeModal ? styles['hidden'] : ''}`} onClick={handlePlayVybe}>play vybe</button>
+            <button className={`${styles['home-button']} ${showCreateVybeModal || showPlayVybeModal ? styles['hidden'] : ''}`} onClick={handleCreateVybe}>create vybe</button>
+            <button className={`${styles['home-button']} ${showCreateVybeModal || showPlayVybeModal ? styles['hidden'] : ''}`} onClick={handlePlayVybe}>play vybe</button>
           </div>
           {showCreateVybeModal && (
             <div className={styles['modal']}>
@@ -180,7 +208,22 @@ function HomePage() {
           {showPlayVybeModal && (
             <div className={styles['modal']}>
               <div className={styles['modal-content']}>
-                <span className={styles['close-button']} onClick={handleClosePlayVybeModal}>&times;</span>
+                <span className={styles['close-button']} onClick={() => setShowPlayVybeModal(false)}>&times;</span>
+                <div className={styles['playlist-circle-container']}>
+                  {Array.isArray(playlists) && playlists.map((playlist, index) => (
+                    <div key={index} className={styles['playlist-circle']} style={{
+                      backgroundColor: `hsl(${playlist.colourHue}, ${playlist.colourSaturation}%, ${playlist.colourLightness}%)`,
+                    }} onClick={() => handlePlaylistClick(playlist.playlistID)}>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          {showSpotifyIframeModal && (
+            <div className={styles['modal']}>
+              <div className={styles['modal-content']}>
+                <span className={styles['close-button']} onClick={() => setShowSpotifyIframeModal(false)}>&times;</span>
                 <iframe
                   src={playlistUrl} // Use the state variable here
                   allow="encrypted-media"

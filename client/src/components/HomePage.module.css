@@ -109,3 +109,25 @@
   max-width: 300px;
   height: auto;
 }
+
+.playlist-circle-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.playlist-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+  .playlist-circle {
+    width: 80px;
+    height: 80px;
+  }
+}
