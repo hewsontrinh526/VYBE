@@ -8,11 +8,12 @@ async function createPlaylist({ spotifyID, accessToken, features }) {
     // Settings
     const endpointUrl = "https://api.spotify.com/v1/recommendations?";
     const token = accessToken;
+    const seedGenres = ["pop", "alternative", "r-n-b", "rock", "punk"];
 
     // Filters
     const queryParams = qs.stringify({
         limit: 25,
-        seed_genres: "k-pop", // Example genre, replace or make dynamic as needed
+        seed_genres: seedGenres.join(','), // Example genre, replace or make dynamic as needed
         target_energy: energy,
         target_danceability: danceability,
         target_valence: valence
