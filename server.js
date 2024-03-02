@@ -333,6 +333,27 @@ app.post('/playlist/save/', async (req, res) => {
     }
 });
 
+app.post('/playlist/fetch/', async (req, res) => {
+    const { spotifyID } = req.body; // Client will send Spotify ID and access token
+
+    if (!spotifyID) {
+        return res.status(400).json({ error: 'Missing required SpotifyID' });
+    }
+
+    try {
+        const userPlaylist = await Playlist.findOne({ spotifyID: spotifyID }).exec();
+
+        if (!userPlaylist) {
+            return res.status(404).json({ error: 'No playlists found for this user' });
+        }
+
+        res.json(userPlaylist.playlist);
+    } catch (error) {
+        console.error('Error fetching playlists:', error);
+        res.status(500).json({ error: 'Error fetching playlists' });
+    }
+});
+
 // fallback to serve react app for any other routes
 app.get('/app/*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'client/build/index.html'));
