@@ -18,8 +18,12 @@ const {
 	exchangeCodeForTokens,
 	getUserInfo,
 	calculateTokenExpiry,
+    refreshSpotifyAccessToken,
 } = require('./spotifyUtils');
-const { fetchUserProfile, findClosestColour, fetchUserAccessToken } = require('./algorithm');
+const { fetchUserProfile,
+    findClosestColour,
+    fetchUserAccessToken
+} = require('./algorithm');
 const { createPlaylist } = require('./playlist');
 
 // init express app
@@ -203,6 +207,20 @@ app.get('/api/token', async (req, res) => {
 	}
 });
 
+// Using refresh token to update access token
+app.get('/api/refresh', async (req, res) => {
+    const userId = req.query.userId;
+
+    try {
+        const result = await refreshSpotifyAccessToken(userId);
+        console.log('User access token updated:', result);
+        res.json(result);
+    } catch (error) {
+        console.error('Error refreshing token:', error);
+        res.status(500).json({ error: 'Error refreshing token' });
+    }
+});
+
 app.get('/user/spotifyID', authenticateToken, (req, res) => {
 	try {
 		res.json({ spotifyID: req.user.spotifyID }); // Send the Spotify user ID as JSON response
@@ -211,39 +229,6 @@ app.get('/user/spotifyID', authenticateToken, (req, res) => {
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
-
-/* // Starting the quiz
-app.post('/quiz/start', (req, res) => {
-    // Initialise the quiz data in the session
-    req.session.quizData = {
-        spotifyID: req.body.spotifyID,
-        results: []
-    };
-    res.send('Quiz started');
-});
-
-// Updating Quiz results
-app.post('/quiz/update', (req, res) => {
-    // Destructure songData from the request body
-    const { songData } = req.body;
-    let quizData = req.session.quizData;
-    // Retrieves the current quiz data from the session
-    const songIndex = quizData.results.findIndex(song => song.title === songData.title);
-    // Searches for the index of a song in the results array that matches the songData
-    // If found, update the songData, else add the songData to the results array
-    if (songIndex > -1) {
-        quizData.results[songIndex] = songData;
-    } else {
-        if (quizData.results.length < 5) {
-            quizData.results.push(songData);
-        } else {
-            return res.status(400).send('Quiz is already full');
-        }
-    }
-    // Sends the updated quiz data back to the session
-    req.session.quizData = quizData;
-    res.send('Quiz updated successfully');
-}); */
 
 // Saving quiz to database
 app.post('/quiz/save', async (req, res) => {

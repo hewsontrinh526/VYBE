@@ -50,6 +50,21 @@ function HomePage() {
     }
   };
 
+  const refreshAccessToken = async () => {
+    const userSpotifyID = localStorage.getItem('spotifyID');
+
+    try {
+      const response = await axios.get(`/api/refresh?userId=${userSpotifyID}`);
+      const { accessToken } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      setSpotifyToken(accessToken);
+      return accessToken;
+    } catch (error) {
+      console.error('Error refreshing access token:', error);
+      // Might want to redirect user to login page if token refresh fails
+    }
+  }
+
   // add functionality for create vybe button
   const handleCreateVybe = () => {
     console.log('create vybe button clicked');
@@ -119,7 +134,7 @@ function HomePage() {
     }, 5000); // Note: Adjusted to 5 seconds based on your setTimeout, but you mentioned 10 seconds in the comment
 
     const userSpotifyID = localStorage.getItem('spotifyID');
-    const userAccessToken = localStorage.getItem('accessToken');
+    const userAccessToken = await refreshAccessToken();
 
     try {
       const payload = {

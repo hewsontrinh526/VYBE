@@ -2,6 +2,10 @@
 const axios = require('axios');
 // querystring for parsing and stringifying
 const qs = require('qs');
+// load env variables from .env
+require('dotenv').config();
+
+const User = require('./models/User');
 
 // exchange authorisation code for access and refresh tokens
 async function exchangeCodeForTokens(code) {
@@ -65,4 +69,41 @@ function calculateTokenExpiry(expiresIn) {
   return expiryTime;
 }
 
-module.exports = { exchangeCodeForTokens, getUserInfo, calculateTokenExpiry };
+async function refreshSpotifyAccessToken(spotifyID) {
+  try {
+    const user = await User.findOne({ spotifyID: spotifyID });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const tokenExpired = new Date() > new Date(user.calculateTokenExpiry);
+    if (!tokenExpired) {
+      return { accessToken: user.accessToken };
+    }
+
+    const refreshTokenResponse = await axios.post('https://accounts.spotify.com/api/token', qs.stringify({
+      grant_type: 'refresh_token',
+      refresh_token: user.refreshToken,
+      client_id: process.env.SPOTIFY_CLIENT_ID,
+      client_secret: process.env.SPOTIFY_CLIENT_SECRET,
+    }), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    const { access_token, expires_in } = refreshTokenResponse.data;
+    user.accessToken = access_token;
+    user.tokenExpiry = new Date(new Date().getTime() + expires_in * 1000);
+    await user.save();
+
+    console.log('User access token refreshed:', user.accessToken);
+    console.log('User token expiry updated:', user.tokenExpiry);
+    return { accessToken: access_token };
+  } catch (error) {
+    console.error('Error refreshing access token:', error);
+    throw new Error('Error refreshing access token');
+  }
+}
+
+module.exports = { exchangeCodeForTokens, getUserInfo, calculateTokenExpiry, refreshSpotifyAccessToken };
