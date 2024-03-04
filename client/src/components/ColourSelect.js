@@ -58,7 +58,7 @@ function ColourSelect({ playNext }) {
 	useEffect(() => {
 		if (clickCount === 5) {
 			setTimeout(() => {
-				navigate('/app/loading');
+				navigate('/app/completed');
 			}, 3000);
 
 			const songs = arrayColours.map((item, index) => ({
