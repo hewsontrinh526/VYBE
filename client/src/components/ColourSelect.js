@@ -15,6 +15,7 @@ function ColourSelect({ playNext }) {
 	const [arrayColours, setColourArray] = useState([]);
 	// const [spotifyID, setSpotifyID] = useState('');
 	const navigate = useNavigate();
+	const [hasNavigated, setHasNavigated] = useState(false);
 	const spotifyID = localStorage.getItem('spotifyID');
 	console.log(spotifyID);
 
@@ -56,7 +57,8 @@ function ColourSelect({ playNext }) {
 	// }, []);
 
 	useEffect(() => {
-		if (clickCount === 5) {
+		if (clickCount === 5 && !hasNavigated) {
+			setHasNavigated(true);
 			setTimeout(() => {
 				navigate('/app/completed');
 			}, 3000);
@@ -85,7 +87,7 @@ function ColourSelect({ playNext }) {
 				});
 		}
 		console.log(`arrayColours:`, arrayColours);
-	}, [clickCount, navigate, arrayColours]);
+	}, [clickCount, navigate, arrayColours, hasNavigated]);
 
 	return (
 		<div>
