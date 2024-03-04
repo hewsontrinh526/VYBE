@@ -5,6 +5,7 @@ import styles from './HomePage.module.css';
 import axios from 'axios';
 import ColourWheel from './ColourWheel';
 import LoadingAnimation from './Loading';
+import ColorNamer from 'color-namer';
 
 function HomePage() {
   const [showPlayVybeModal, setShowPlayVybeModal] = useState(false);
@@ -152,11 +153,16 @@ function HomePage() {
       setInterpolatedFeatures(features);
       console.log('Interpolated features:', features);
 
+      const hslString = `hsl(${currentColour.hue}, ${currentColour.saturation}%, ${currentColour.lightness}%)`;
+      const colourName = ColorNamer(hslString).ntc[0].name;
+      console.log('Colour name:', colourName);
+
       // Second Axios POST request using async/await
       const createResponse = await axios.post('/playlist/create', {
         spotifyID: userSpotifyID,
         accessToken: userAccessToken,
         features: features,
+        selectedColourName: colourName, // Placeholder for HEX value
       });
       const playlistId = createResponse.data.playlistId;
       console.log('Playlist ID:', playlistId);

@@ -1,7 +1,9 @@
 const axios = require('axios');
 const qs = require('qs');
+const colorNamer = require('color-namer');
+const hslToHex = require('@davidmarkclements/hsl-to-hex');
 
-async function createPlaylist({ spotifyID, accessToken, features }) {
+async function createPlaylist({ spotifyID, accessToken, features, selectedColourName }) {
     // Extracting features
     const { energy, danceability, valence } = features;
 
@@ -44,7 +46,7 @@ async function createPlaylist({ spotifyID, accessToken, features }) {
         const playlistEndpointUrl = `https://api.spotify.com/v1/users/${spotifyID}/playlists`;
 
         const playlistResponse = await axios.post(playlistEndpointUrl, {
-            name: "Playlist created via Spotify API",
+            name: `VYBE: ${selectedColourName} Playlist on ${new Date().toLocaleDateString()}`,
             description: "A programmatically created playlist based on specified features.",
             public: false
         }, {
