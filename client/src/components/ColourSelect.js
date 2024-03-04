@@ -41,19 +41,19 @@ function ColourSelect({ playNext }) {
 		{ trackId: '6JY1IdkZGeIcPegKxjSKeb' }, // since u been gone
 	];
 
-	useEffect(() => {
-		const getSpotifyID = async () => {
-			try {
-				// const accessToken = localStorage.getItem('accessToken');
-				const response = await axios.get('/user/spotifyID');
-				setSpotifyID(response.data.spotifyID);
-				console.log(spotifyID);
-			} catch (error) {
-				console.error('getSpotifyId error', error);
-			}
-		};
-		getSpotifyID();
-	}, []);
+	// useEffect(() => {
+	// 	const getSpotifyID = async () => {
+	// 		try {
+	// 			// const accessToken = localStorage.getItem('accessToken');
+	// 			const response = await axios.get('/user/spotifyID');
+	// 			setSpotifyID(response.data.spotifyID);
+	// 			console.log(spotifyID);
+	// 		} catch (error) {
+	// 			console.error('getSpotifyId error', error);
+	// 		}
+	// 	};
+	// 	getSpotifyID();
+	// }, []);
 
 	useEffect(() => {
 		if (clickCount === 5) {
@@ -82,11 +82,6 @@ function ColourSelect({ playNext }) {
 				})
 				.catch((error) => {
 					console.error('Error saving data:', error);
-				})
-				.finally(() => {
-					// Reset click count and arrays
-					setClickCount(0);
-					setColourArray([]);
 				});
 		}
 		console.log(`arrayColours:`, arrayColours);
