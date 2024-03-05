@@ -2,15 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
-import TrackFeatures from './ColourTrackFeats';
+// import TrackFeatures from './ColourTrackFeats';
 import ColourSelect from './ColourSelect';
 
 const trackIds = [
-	'4PTG3Z6ehGkBFwjybzWkR8', // rick roll - e: high v: high
-	'54X78diSLoUDI3joC2bjMz', // purple rain - e: mod v: mod
-	'3M8FzayQWtkvOhqMn2V4T2', // lean on me - e: low v: high
-	'3FAclTFfvUuQYnEsptbK8w', // back to black - e: low v: low
-	'6JY1IdkZGeIcPegKxjSKeb', // since u been gone e: - high v: low
+	'4eHbdreAnSOrDDsFfc4Fpm', // i will always love you
+	'5FVd6KXrgO9B3JPmC8OPst', // do i wanna know
+	'4PTG3Z6ehGkBFwjybzWkR8', // rick roll
+	'7wZUrN8oemZfsEd1CGkbXE', // bleeding love
+	'03UrZgTINDqvnUMbbIMhql', // gangnam style
 ];
 
 const ColourPlaylist = () => {
@@ -70,7 +70,7 @@ const ColourPlaylist = () => {
 				></iframe>
 			</div>
 			<div>
-				<TrackFeatures trackId={trackIds[currentTrackIndex]} />
+				{/* <TrackFeatures trackId={trackIds[currentTrackIndex]} /> */}
 				<ColourSelect
 					playNext={playNext}
 					trackId={trackIds[currentTrackIndex]}

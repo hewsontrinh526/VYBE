@@ -7,6 +7,14 @@ import ColourSaved from './ColourSaved';
 import ColourWheel from './ColourWheel';
 import axios from 'axios';
 
+const trackIds = [
+	{ trackId: '4eHbdreAnSOrDDsFfc4Fpm' }, // i will always love you
+	{ trackId: '5FVd6KXrgO9B3JPmC8OPst' }, // do i wanna know
+	{ trackId: '4PTG3Z6ehGkBFwjybzWkR8' }, // rick roll
+	{ trackId: '7wZUrN8oemZfsEd1CGkbXE' }, // bleeding love
+	{ trackId: '03UrZgTINDqvnUMbbIMhql' }, // gangnam style
+];
+
 function ColourSelect({ playNext }) {
 	let [clickCount, setClickCount] = useState(0);
 	const [currentColour, setCurrentColour] = useState({
@@ -34,14 +42,6 @@ function ColourSelect({ playNext }) {
 		playNext();
 	}, []);
 
-	const trackIds = [
-		{ trackId: '4PTG3Z6ehGkBFwjybzWkR8' }, // rick roll
-		{ trackId: '54X78diSLoUDI3joC2bjMz' }, // purple rain
-		{ trackId: '3M8FzayQWtkvOhqMn2V4T2' }, // lean on me
-		{ trackId: '3FAclTFfvUuQYnEsptbK8w' }, // back to black
-		{ trackId: '6JY1IdkZGeIcPegKxjSKeb' }, // since u been gone
-	];
-
 	// useEffect(() => {
 	// 	const getSpotifyID = async () => {
 	// 		try {
@@ -61,7 +61,7 @@ function ColourSelect({ playNext }) {
 			setHasNavigated(true);
 			setTimeout(() => {
 				navigate('/app/completed');
-			}, 3000);
+			}, 2000);
 
 			const songs = arrayColours.map((item, index) => ({
 				trackID: trackIds[index].trackId,
