@@ -10,7 +10,7 @@ async function createPlaylist({ spotifyID, accessToken, features, selectedColour
     // Settings
     const endpointUrl = "https://api.spotify.com/v1/recommendations?";
     const token = accessToken;
-    const seedGenres = ["pop", "alternative", "r-n-b", "rock", "punk"];
+    const seedGenres = ["pop", "rap", "hip-hop", "rock", "dance-pop"];
 
     // Filters
     const queryParams = qs.stringify({
@@ -46,7 +46,7 @@ async function createPlaylist({ spotifyID, accessToken, features, selectedColour
         const playlistEndpointUrl = `https://api.spotify.com/v1/users/${spotifyID}/playlists`;
 
         const playlistResponse = await axios.post(playlistEndpointUrl, {
-            name: `VYBE: ${selectedColourName} ${new Date().toLocaleDateString()}`,
+            name: `VYBE: ${selectedColourName} ${new Date().toLocaleDateString('en-AU')}`,
             description: "A programmatically created playlist based on specified features.",
             public: false
         }, {

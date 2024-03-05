@@ -154,7 +154,7 @@ function HomePage() {
       console.log('Interpolated features:', features);
 
       const hslString = `hsl(${currentColour.hue}, ${currentColour.saturation}%, ${currentColour.lightness}%)`;
-      const colourName = ColorNamer(hslString).ntc[0].name;
+      const colourName = ColorNamer(hslString).pantone[0].name;
       console.log('Colour name:', colourName);
 
       // Second Axios POST request using async/await
