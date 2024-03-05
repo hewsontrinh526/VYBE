@@ -54,7 +54,16 @@ const ColourPlaylist = () => {
 	const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
 	const playNext = () => {
-		setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % trackIds.length);
+		setCurrentTrackIndex((prevIndex) => {
+			const nextIndex = prevIndex + 1;
+			if (nextIndex < trackIds.length) {
+				// if next index is within bounds, set it as the new index
+				return nextIndex;
+			} else {
+				// do not change the current index
+				return prevIndex;
+			}
+		});
 	};
 
 	return (
