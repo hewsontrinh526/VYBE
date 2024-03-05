@@ -18,11 +18,12 @@ const {
 	exchangeCodeForTokens,
 	getUserInfo,
 	calculateTokenExpiry,
-    refreshSpotifyAccessToken,
+	refreshSpotifyAccessToken,
 } = require('./spotifyUtils');
-const { fetchUserProfile,
-    findClosestColour,
-    fetchUserAccessToken
+const {
+	fetchUserProfile,
+	findClosestColour,
+	fetchUserAccessToken,
 } = require('./algorithm');
 const { createPlaylist } = require('./playlist');
 
@@ -52,7 +53,7 @@ app.get('/api/auth/url', (req, res) => {
 		'user-library-read', // read access to user's library
 		'user-read-recently-played', // read access to user's recently played
 		'playlist-modify-public', // write access to user's public playlists
-    'playlist-modify-private', // write access to user's private playlists
+		'playlist-modify-private', // write access to user's private playlists
 		'ugc-image-upload', // write access to user's image uploads
 	].join(' ');
 
@@ -137,7 +138,7 @@ app.get('/callback', async (req, res) => {
 	);
 	*/
 
-/*
+	/*
 	// commenting out while testing front end redirection
 	// Check if the user has completed the quiz
 	const quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
@@ -156,7 +157,7 @@ app.get('/callback', async (req, res) => {
 		accessToken: spotifyTokens.access_token,
 		*/
 	res.redirect(redirectUri);
-	});
+});
 
 function authenticateToken(req, res, next) {
 	const token =
@@ -210,16 +211,16 @@ app.get('/api/token', async (req, res) => {
 
 // Using refresh token to update access token
 app.get('/api/refresh', async (req, res) => {
-    const userId = req.query.userId;
+	const userId = req.query.userId;
 
-    try {
-        const result = await refreshSpotifyAccessToken(userId);
-        console.log('User access token updated:', result);
-        res.json(result);
-    } catch (error) {
-        console.error('Error refreshing token:', error);
-        res.status(500).json({ error: 'Error refreshing token' });
-    }
+	try {
+		const result = await refreshSpotifyAccessToken(userId);
+		console.log('User access token updated:', result);
+		res.json(result);
+	} catch (error) {
+		console.error('Error refreshing token:', error);
+		res.status(500).json({ error: 'Error refreshing token' });
+	}
 });
 
 app.get('/user/spotifyID', authenticateToken, (req, res) => {
@@ -246,103 +247,131 @@ app.post('/quiz/save', async (req, res) => {
 
 // Executing Algorithm
 app.post('/quiz/algo', async (req, res) => {
-    const { spotifyID, selectedHSL } = req.body;
+	const { spotifyID, selectedHSL } = req.body;
 
-    try {
-        // Fetch the user profile using the Spotify ID
-        const userProfile = await fetchUserProfile(spotifyID);
-        const userAccessToken = await fetchUserAccessToken(spotifyID);
+	try {
+		// Fetch the user profile using the Spotify ID
+		const userProfile = await fetchUserProfile(spotifyID);
+		const userAccessToken = await fetchUserAccessToken(spotifyID);
 
-        // If no user profits is foudn, send an appropriate response
-        if (!userProfile) {
-            return res.status(404).json({ message: 'User profile not found' });
-        } else if (!userAccessToken) {
-            return res.status(404).json({ message: 'User access token not found' });
-        }
+		// If no user profits is foudn, send an appropriate response
+		if (!userProfile) {
+			return res.status(404).json({ message: 'User profile not found' });
+		} else if (!userAccessToken) {
+			return res.status(404).json({ message: 'User access token not found' });
+		}
 
-        // Calculate the interpolated music features based on the closest colour
-        const interpolatedFeatures = await findClosestColour(userProfile, selectedHSL, userAccessToken);
-        console.log('Interpolated Music Features:', interpolatedFeatures);
+		// Calculate the interpolated music features based on the closest colour
+		const interpolatedFeatures = await findClosestColour(
+			userProfile,
+			selectedHSL,
+			userAccessToken
+		);
+		console.log('Interpolated Music Features:', interpolatedFeatures);
 
-        // Send the interpolated music features as a response
-        res.json(interpolatedFeatures);
-    } catch (error) {
-        console.error('Error executing algorithm:', error.message);
-        res.status(500).json({ message: 'Error executing algorithm' });
-    }
+		// Send the interpolated music features as a response
+		res.json(interpolatedFeatures);
+	} catch (error) {
+		console.error('Error executing algorithm:', error.message);
+		res.status(500).json({ message: 'Error executing algorithm' });
+	}
 });
 
 app.post('/playlist/create/', async (req, res) => {
-    try {
-        const result = await createPlaylist(req.body); // Pass the entire body to the function
-        res.status(200).json(result);
-    } catch (error) {
-        console.error('Error creating playlist:', error);
-        res.status(500).send('Error creating playlist');
-    }
+	try {
+		const result = await createPlaylist(req.body); // Pass the entire body to the function
+		res.status(200).json(result);
+	} catch (error) {
+		console.error('Error creating playlist:', error);
+		res.status(500).send('Error creating playlist');
+	}
 });
 
 app.post('/playlist/save/', async (req, res) => {
-    const { spotifyID, playlist } = req.body // Extracts the SpotifyID and playlist data from request
+	const { spotifyID, playlist } = req.body; // Extracts the SpotifyID and playlist data from request
 
-    try {
-        // Attempts to find any existing user in the playlist collection
-        const userData = await Playlist.findOne({ spotifyID: spotifyID });
+	try {
+		// Attempts to find any existing user in the playlist collection
+		const userData = await Playlist.findOne({ spotifyID: spotifyID });
 
-        if (userData) {
-            const newPlaylistEntry = {
-                playlistID: playlist.playlistID,
-                colourHue: playlist.colourHue,
-                colourSaturation: playlist.colourSaturation,
-                colourLightness: playlist.colourLightness
-            };
+		if (userData) {
+			const newPlaylistEntry = {
+				playlistID: playlist.playlistID,
+				colourHue: playlist.colourHue,
+				colourSaturation: playlist.colourSaturation,
+				colourLightness: playlist.colourLightness,
+			};
 
-            userData.playlist.push(newPlaylistEntry); // If found, add the new playlist to the existing user's playlist array
-            await userData.save(); // Save the updated user data
-            res.send('Playlist saved successfully');
-        } else {
-            let newPlaylist = new Playlist({
-                spotifyID: spotifyID,
-                playlist: [{
-                    playlistID: playlist.playlistID,
-                    colourHue: playlist.colourHue,
-                    colourSaturation: playlist.colourSaturation,
-                    colourLightness: playlist.colourLightness
-                }]
-            });
-            await newPlaylist.save();
-            res.send('New playlist saved successfully');
-        }
-    } catch (error) {
-        console.error('Error saving playlist:', error);
-        res.status(500).send('Error saving playlist');
-    }
+			userData.playlist.push(newPlaylistEntry); // If found, add the new playlist to the existing user's playlist array
+			await userData.save(); // Save the updated user data
+			res.send('Playlist saved successfully');
+		} else {
+			let newPlaylist = new Playlist({
+				spotifyID: spotifyID,
+				playlist: [
+					{
+						playlistID: playlist.playlistID,
+						colourHue: playlist.colourHue,
+						colourSaturation: playlist.colourSaturation,
+						colourLightness: playlist.colourLightness,
+					},
+				],
+			});
+			await newPlaylist.save();
+			res.send('New playlist saved successfully');
+		}
+	} catch (error) {
+		console.error('Error saving playlist:', error);
+		res.status(500).send('Error saving playlist');
+	}
 });
 
 app.post('/playlist/fetch/', async (req, res) => {
-    const { spotifyID } = req.body; // Client will send Spotify ID and access token
+	const { spotifyID } = req.body; // Client will send Spotify ID and access token
 
-    if (!spotifyID) {
-        return res.status(400).json({ error: 'Missing required SpotifyID' });
-    }
+	if (!spotifyID) {
+		return res.status(400).json({ error: 'Missing required SpotifyID' });
+	}
 
-    try {
-        const userPlaylist = await Playlist.findOne({ spotifyID: spotifyID }).exec();
+	try {
+		const userPlaylist = await Playlist.findOne({
+			spotifyID: spotifyID,
+		}).exec();
 
-        if (!userPlaylist) {
-            return res.status(404).json({ error: 'No playlists found for this user' });
-        }
+		if (!userPlaylist) {
+			return res
+				.status(404)
+				.json({ error: 'No playlists found for this user' });
+		}
 
-        res.json(userPlaylist.playlist);
-    } catch (error) {
-        console.error('Error fetching playlists:', error);
-        res.status(500).json({ error: 'Error fetching playlists' });
-    }
+		res.json(userPlaylist.playlist);
+	} catch (error) {
+		console.error('Error fetching playlists:', error);
+		res.status(500).json({ error: 'Error fetching playlists' });
+	}
 });
 
 // fallback to serve react app for any other routes
 app.get('/app/*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'client/build/index.html'));
+});
+
+// drop quizzes collection to redo quiz
+app.post('/home/drop', async (req, res) => {
+	const { spotifyID } = req.body;
+
+	try {
+		const userData = await Quiz.findOne({ spotifyID: spotifyID });
+		if (userData) {
+			await Quiz.collection.drop();
+			res.send('Quiz collection dropped successfully');
+		} else {
+			res.status(404).send('User data not found');
+		}
+	} catch (error) {
+		console.error('Error dropping quiz collection:', error);
+		res.status(500).json({ error: 'Error fetching playlists' });
+	}
 });
 
 // start the server

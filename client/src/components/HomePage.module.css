@@ -1,7 +1,8 @@
 
 .button-container {
   position: fixed;
-  bottom: 30%;
+  /* bottom: 30%; */
+  top: 20vh;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
