@@ -2,6 +2,8 @@ const axios = require('axios');
 const qs = require('qs');
 const colorNamer = require('color-namer');
 const hslToHex = require('@davidmarkclements/hsl-to-hex');
+const { getImageBase64 } = require('./playlistArt');
+const { base } = require('./models/User');
 
 async function createPlaylist({ spotifyID, accessToken, features, selectedColourName }) {
     // Extracting features
@@ -68,6 +70,28 @@ async function createPlaylist({ spotifyID, accessToken, features, selectedColour
                 "Authorization": `Bearer ${token}`
             }
         });
+
+        // Get the base64 image for the playlist cover
+        if (playlistId) {
+            // try upload chex
+            try {
+                const base64Image = await getImageBase64();
+                if (!base64Image) {
+                    console.error('Error getting base64 image');
+                    return;
+                }
+                const imageUrl = `https://api.spotify.com/v1/playlists/${playlistId}/images`;
+                await axios.put(imageUrl, base64Image, {
+                    headers:  {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "image/jpeg"
+                    }
+            });
+            console.log('Playlist cover uploaded');
+        } catch (error) {
+            console.error('Error uploading playlist cover:', error);
+        }
+    }
         console.log(`Your playlist is ready at ${playlistUrl}`);
         return {
             playlistId: playlistId,
