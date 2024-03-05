@@ -19,9 +19,7 @@ function App() {
 				</TransitionWrap>
 			} />
 				<Route path='/app/home' element={
-				<TransitionWrap>
 					<HomePage />
-				</TransitionWrap>
 			} />
 				<Route path='/app/quiz' element={
 				<TransitionWrap>
