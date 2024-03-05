@@ -46,7 +46,7 @@ async function createPlaylist({ spotifyID, accessToken, features, selectedColour
         const playlistEndpointUrl = `https://api.spotify.com/v1/users/${spotifyID}/playlists`;
 
         const playlistResponse = await axios.post(playlistEndpointUrl, {
-            name: `VYBE: ${selectedColourName} Playlist on ${new Date().toLocaleDateString()}`,
+            name: `VYBE: ${selectedColourName} ${new Date().toLocaleDateString()}`,
             description: "A programmatically created playlist based on specified features.",
             public: false
         }, {
