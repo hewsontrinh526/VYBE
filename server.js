@@ -32,7 +32,7 @@ const port = 3500;
 
 // connecting to mongoDB
 mongoose
-	.connect('mongodb://localhost:27017/VYBE')
+	.connect('mongodb+srv://6734:PMPp9rr2m3OLWu6a@cluster0.vthfiow.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 	.then(() => console.log('MongoDB connected...'))
 	.catch((err) => console.error(err));
 
