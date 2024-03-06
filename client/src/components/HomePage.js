@@ -57,8 +57,6 @@ function HomePage() {
 		}
 	};
 
-	/*
-	// This is a nice to have!
 	const refreshAccessToken = async () => {
 		const userSpotifyID = localStorage.getItem('spotifyID');
 
@@ -74,7 +72,6 @@ function HomePage() {
 			console.error('Error refreshing access token:', error);
 		}
 	};
-	*/
 
 	// add functionality for create vybe button
 	const handleCreateVybe = () => {
@@ -85,7 +82,7 @@ function HomePage() {
 	// show the play vybe modal
 	const handlePlayVybe = async () => {
 		console.log('play vybe button clicked');
-		setShowLoadingAnimation(true); // Opens loading screen whilst fetching data
+		// setShowLoadingAnimation(true); // Opens loading screen whilst fetching data
 
 		const userSpotifyID = localStorage.getItem('spotifyID');
 
@@ -98,9 +95,9 @@ function HomePage() {
 			setShowPlayVybeModal(true);
 		} catch (error) {
 			console.log('Error fetching playlists:', error);
-		} finally {
+		} /* finally {
 			setShowLoadingAnimation(false);
-		}
+		} */
 	};
 
 	const handlePlaylistClick = (playlistID) => {
@@ -145,7 +142,7 @@ function HomePage() {
 		}, 5000);
 
 		const userSpotifyID = localStorage.getItem('spotifyID');
-		const userAccessToken = await refreshAccessToken();
+		// const userAccessToken = await refreshAccessToken();
 
 		try {
 			const payload = {
