@@ -19,7 +19,6 @@ const fetchTrackFeatures = async (trackId, userAccessToken) => {
             danceability: trackFeatures.danceability,
             valence: trackFeatures.valence,
         };
-        // console.log(musicFeatures);
         return musicFeatures;
         // Now, 'musicFeatures' contains the data in the specified format:
     } catch (error) {
@@ -92,15 +91,10 @@ async function findClosestColour(userProfile, selectedHSL, userAccessToken) {
     // Wait for all promises to resolve
     const trackFeatures = await Promise.all(trackFeaturesPromises);
 
-    // console.log(trackFeatures);
-    // console.log(twoClosest);
-
     const combinedData = trackFeatures.map((feature, index) => ({
         ...feature, // Spread the properties of the feature object
         ...twoClosest[index] // Spread the properties of the corresponding object from twoClosest
     }));
-
-    // console.log(combinedData);
 
     let weightedSumFeatures = { energy: 0, danceability: 0, valence: 0 };
     let totalWeight = 0;
@@ -114,9 +108,6 @@ async function findClosestColour(userProfile, selectedHSL, userAccessToken) {
         weightedSumFeatures.valence += item.valence * weight;
     });
 
-    // console.log(weightedSumFeatures);
-    // console.log(totalWeight);
-
     if (totalWeight === 0) totalWeight = 1;
 
     const averageFeatures = {
@@ -124,8 +115,6 @@ async function findClosestColour(userProfile, selectedHSL, userAccessToken) {
         danceability: (weightedSumFeatures.danceability / totalWeight).toPrecision(3),
         valence: (weightedSumFeatures.valence / totalWeight).toPrecision(3)
     }
-
-    // console.log(averageFeatures);
 
     return averageFeatures;
 }

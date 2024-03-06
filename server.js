@@ -8,7 +8,6 @@ const axios = require('axios');
 const qs = require('qs');
 const path = require('path');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
 
 // models and utility functions
 const User = require('./models/User');
@@ -70,21 +69,6 @@ app.get('/api/auth/url', (req, res) => {
 	res.json({ spotifyAuthUrl });
 });
 
-// simple route to test the callback
-/* app.get('/callback', async (req, res) => {
-    const code = req.query.code; // the code from spotify's redirect
-
-    try {
-        const spotifyTokens = await exchangeCodeForTokens(code);
-        console.log(spotifyTokens);
-
-        // directly redirect to /quiz without checking database
-        res.redirect('/app/quiz');
-    } catch (error) {
-        console.error('Error during code exchange:', error);
-    }
-}) */
-
 // refreshes the new access and refresh tokens for the user
 async function updateTokensForUser(user, tokens) {
 	user.accessToken = tokens.access_token;
@@ -130,32 +114,10 @@ app.get('/callback', async (req, res) => {
 		console.log('User info updated:', user);
 	}
 
-	/*
-	// send token back to client or set cookie
-	const token = jwt.sign(
-		{ spotifyID: userInfo.id },
-		process.env.SPOTIFY_CLIENT_SECRET
-	);
-	*/
-
-	/*
-	// commenting out while testing front end redirection
-	// Check if the user has completed the quiz
-	const quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
-	if (quizCount > 0) {
-		res.redirect('/app/home'); // Redirect to /app/home if quiz is completed
-	} else {
-		res.redirect('/app/quiz'); // Redirect to /app/quiz if quiz is not completed
-	}
-	*/
 	quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
 	const quizCompleted = quizCount > 0;
 
 	const redirectUri = `http://localhost:3500/app/spotify-callback?access_token=${spotifyTokens.access_token}&spotify_id=${userInfo.id}&quiz_completed=${quizCompleted}`;
-	/* res.json ({
-		quizCompleted: quizCompleted,
-		accessToken: spotifyTokens.access_token,
-		*/
 	res.redirect(redirectUri);
 });
 
@@ -254,7 +216,7 @@ app.post('/quiz/algo', async (req, res) => {
 		const userProfile = await fetchUserProfile(spotifyID);
 		const userAccessToken = await fetchUserAccessToken(spotifyID);
 
-		// If no user profits is foudn, send an appropriate response
+		// If no user profile is found, send an appropriate response
 		if (!userProfile) {
 			return res.status(404).json({ message: 'User profile not found' });
 		} else if (!userAccessToken) {

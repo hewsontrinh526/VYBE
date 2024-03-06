@@ -12,7 +12,7 @@ async function createPlaylist({ spotifyID, accessToken, features, selectedColour
     // Settings
     const endpointUrl = "https://api.spotify.com/v1/recommendations?";
     const token = accessToken;
-    const seedGenres = ["pop", "rap", "hip-hop", "rock", "dance-pop"];
+    const seedGenres = ["pop", "rap", "hip-hop", "rock", "indie"];
 
     // Filters
     const queryParams = qs.stringify({
