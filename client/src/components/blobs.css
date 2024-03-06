@@ -66,3 +66,10 @@ head::after {
   padding: 20px;
   background-color: transparent;
 }
+
+@media screen and (max-height: 667px) {
+  .logo {
+    max-width: 50px;
+  }
+
+}

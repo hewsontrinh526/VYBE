@@ -70,10 +70,8 @@ const ColourPlaylist = () => {
 			<div className={styles['spotify-container']}>
 				<iframe
 					src={`https://open.spotify.com/embed/track/${trackIds[currentTrackIndex]}`}
-					width='100%'
-					height='200'
+					className={styles['iframe']}
 					frameBorder='0'
-					allowtransparency='true'
 					allow='encrypted-media'
 				></iframe>
 			</div>
