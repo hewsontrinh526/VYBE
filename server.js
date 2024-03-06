@@ -117,7 +117,7 @@ app.get('/callback', async (req, res) => {
 	quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
 	const quizCompleted = quizCount > 0;
 
-	const redirectUri = `https://vybe.onrender.com/app/spotify-callback?access_token=${spotifyTokens.access_token}&spotify_id=${userInfo.id}&quiz_completed=${quizCompleted}`;
+	const redirectUri = `https://vybe-dsxp.onrender.com/app/spotify-callback?access_token=${spotifyTokens.access_token}&spotify_id=${userInfo.id}&quiz_completed=${quizCompleted}`;
 	res.redirect(redirectUri);
 });
 
@@ -338,5 +338,5 @@ app.post('/home/drop', async (req, res) => {
 
 // start the server
 app.listen(port, () => {
-	console.log(`Example app listening at https://vybe-frontend.onrender.com on Port ${port}`);
+	console.log(`Example app listening at https://vybe-dsxp.onrender.com:${port}`);
 });
