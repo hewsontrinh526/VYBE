@@ -45,10 +45,6 @@ app.use(cors());
 // use the static files from the react app build directory
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.get('*', (req, res) =>
-	res.sendFile(path.join(__dirname, '/client/build/index.html'))
-);
-
 // endpoint /api/auth/url for the spotifyAuthUrl
 app.get('/api/auth/url', (req, res) => {
 	const scopes = [
@@ -339,6 +335,10 @@ app.post('/home/drop', async (req, res) => {
 		res.status(500).json({ error: 'Error fetching playlists' });
 	}
 });
+
+app.get('*', (req, res) =>
+	res.sendFile(path.join(__dirname, '/client/build/index.html'))
+);
 
 // start the server
 app.listen(port, () => {
