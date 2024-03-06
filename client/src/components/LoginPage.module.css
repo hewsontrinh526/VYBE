@@ -46,3 +46,19 @@
   margin-right: 10px;
   vertical-align: middle;
 }
+
+@media (max-height: 550px) {
+  .button-container {
+    bottom: 50px;
+  }
+
+  .spotify-login-button {
+    padding: 15px 35px;
+    font-size: 0.8rem;
+    border-radius: 30px;
+  }
+
+  .spotify-logo {
+    height: 25px;
+  }
+}
