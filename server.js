@@ -28,6 +28,7 @@ const { createPlaylist } = require('./playlist');
 
 // init express app
 const app = express();
+const port = 3500;
 
 // connecting to mongoDB
 mongoose
@@ -43,6 +44,10 @@ app.use(cors());
 
 // use the static files from the react app build directory
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.get('*', (req, res) =>
+	res.sendFile(path.join(__dirname, '/client/build/index.html'))
+);
 
 // endpoint /api/auth/url for the spotifyAuthUrl
 app.get('/api/auth/url', (req, res) => {
@@ -336,6 +341,6 @@ app.post('/home/drop', async (req, res) => {
 });
 
 // start the server
-app.listen( () => {
-	console.log(`Example app listening at https://vybe-dsxp.onrender.com`);
+app.listen(port, () => {
+	console.log(`Example app listening at https://vybe-dsxp.onrender.com:${port}`);
 });
