@@ -28,7 +28,6 @@ const { createPlaylist } = require('./playlist');
 
 // init express app
 const app = express();
-const port = 3500;
 
 // connecting to mongoDB
 mongoose
@@ -337,6 +336,6 @@ app.post('/home/drop', async (req, res) => {
 });
 
 // start the server
-app.listen(port, () => {
-	console.log(`Example app listening at https://vybe-dsxp.onrender.com:${port}`);
+app.listen( () => {
+	console.log(`Example app listening at https://vybe-dsxp.onrender.com`);
 });
