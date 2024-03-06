@@ -3,3 +3,8 @@
   src: url('/fonts/Geom-Medium.ttf') format('truetype'),
   url('/fonts/Geom-Medium.woff') format('woff');
 }
+
+@font-face {
+  font-family: 'Sushi-Sans';
+  src: url('/fonts/Sushi-Sans.woff') format('woff');
+}
