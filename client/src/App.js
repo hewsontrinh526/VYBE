@@ -44,7 +44,6 @@ function App() {
 						<CompletedAnimation />
 					</TransitionWrap>
 			} />
-				{/* add other routes here */}
 			</Routes>
 		</Router>
 	);
