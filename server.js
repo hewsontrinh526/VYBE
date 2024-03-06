@@ -325,7 +325,7 @@ app.post('/home/drop', async (req, res) => {
 	try {
 		const userData = await Quiz.findOne({ spotifyID: spotifyID });
 		if (userData) {
-			await Quiz.collection.drop();
+			await Quiz.deleteOne({ spotifyID: spotifyID });
 			res.send('Quiz collection dropped successfully');
 		} else {
 			res.status(404).send('User data not found');
