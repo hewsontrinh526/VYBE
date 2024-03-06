@@ -2,10 +2,8 @@
 import React, { useEffect, useContext } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
-// import { useData } from './ColourDataContext';
 
 function ColourSaved({ newColour, clickCount }) {
-	// const { sendDataToDatabase } = useData();
 
 	// need this array to have the saved colours displayed
 	let circleStyles = [
@@ -31,29 +29,9 @@ function ColourSaved({ newColour, clickCount }) {
 		);
 	}
 
-	// const handleSendData = () => {
-	// 	if (clickCount === 5) {
-	// 		const payload = {
-	// 			colourHue: newColour.h,
-	// 			colourSaturation: color.s,
-	// 			colourLightness: color.l,
-	// 		};
-	// 		console.log('click confirmed');
-	// 		sendDataToDatabase(payload);
-	// 	}
-	// };
-
-	// console.log(
-	// 	'Colours:',
-	// 	circleStyles.map((circle) => circleStyles)
-	// );
-
 	return (
 		<>
 			<div className={styles['colours-saved']}>{circles}</div>
-			{/* <div className={styles['colour-data-select']}>
-				<button onClick={handleSendData}>Send Data from Colour Saved 2</button>
-			</div> */}
 		</>
 	);
 }

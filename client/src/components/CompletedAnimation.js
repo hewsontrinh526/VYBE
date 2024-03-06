@@ -9,7 +9,7 @@ const  CompletedAnimation = () => {
   useEffect(() => {
 		setTimeout(() => {
 			navigate('/app/home');
-		}, 5000);
+		}, 3000);
 	}, [navigate]);
 
   return (

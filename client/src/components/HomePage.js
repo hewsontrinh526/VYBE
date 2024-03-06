@@ -57,6 +57,8 @@ function HomePage() {
 		}
 	};
 
+	/*
+	// This is a nice to have!
 	const refreshAccessToken = async () => {
 		const userSpotifyID = localStorage.getItem('spotifyID');
 
@@ -70,9 +72,9 @@ function HomePage() {
 			}
 		} catch (error) {
 			console.error('Error refreshing access token:', error);
-			// Might want to redirect user to login page if token refresh fails
 		}
 	};
+	*/
 
 	// add functionality for create vybe button
 	const handleCreateVybe = () => {
@@ -140,7 +142,7 @@ function HomePage() {
 		setTimeout(() => {
 			minimumTimeElapsed = true;
 			maybeHideLoading(); // Attempt to hide the loading animation
-		}, 5000); // Note: Adjusted to 5 seconds based on your setTimeout, but you mentioned 10 seconds in the comment
+		}, 5000);
 
 		const userSpotifyID = localStorage.getItem('spotifyID');
 		const userAccessToken = await refreshAccessToken();
@@ -170,7 +172,7 @@ function HomePage() {
 				spotifyID: userSpotifyID,
 				accessToken: await refreshAccessToken(),
 				features: features,
-				selectedColourName: colourName, // Placeholder for HEX value
+				selectedColourName: colourName,
 			});
 			const playlistId = createResponse.data.playlistId;
 			console.log('Playlist ID:', playlistId);

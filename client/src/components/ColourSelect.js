@@ -21,7 +21,6 @@ function ColourSelect({ playNext }) {
 		hsl: { h: 0, s: 0, l: 0 },
 	});
 	const [arrayColours, setColourArray] = useState([]);
-	// const [spotifyID, setSpotifyID] = useState('');
 	const navigate = useNavigate();
 	const [hasNavigated, setHasNavigated] = useState(false);
 	const spotifyID = localStorage.getItem('spotifyID');
@@ -42,20 +41,6 @@ function ColourSelect({ playNext }) {
 		playNext();
 	}, []);
 
-	// useEffect(() => {
-	// 	const getSpotifyID = async () => {
-	// 		try {
-	// 			// const accessToken = localStorage.getItem('accessToken');
-	// 			const response = await axios.get('/user/spotifyID');
-	// 			setSpotifyID(response.data.spotifyID);
-	// 			console.log(spotifyID);
-	// 		} catch (error) {
-	// 			console.error('getSpotifyId error', error);
-	// 		}
-	// 	};
-	// 	getSpotifyID();
-	// }, []);
-
 	useEffect(() => {
 		if (clickCount === 5 && !hasNavigated) {
 			setHasNavigated(true);
@@ -69,8 +54,6 @@ function ColourSelect({ playNext }) {
 				colourSaturation: item.colourSaturation,
 				colourLightness: item.colourLightness,
 			}));
-
-			// const spotifyID = 'x70mz3mucf0xukuqjqpv3tepg';
 
 			const quizData = {
 				spotifyID: spotifyID,

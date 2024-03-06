@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ColourQuiz.module.css';
 import './blobs.css';
-// import TrackFeatures from './ColourTrackFeats';
 import ColourSelect from './ColourSelect';
 
 const trackIds = [
@@ -79,7 +78,6 @@ const ColourPlaylist = () => {
 				></iframe>
 			</div>
 			<div>
-				{/* <TrackFeatures trackId={trackIds[currentTrackIndex]} /> */}
 				<ColourSelect
 					playNext={playNext}
 					trackId={trackIds[currentTrackIndex]}
