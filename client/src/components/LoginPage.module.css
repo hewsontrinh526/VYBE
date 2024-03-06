@@ -47,14 +47,14 @@
   vertical-align: middle;
 }
 
-@media (max-height: 550px) {
+@media (max-height: 667px) {
   .button-container {
-    bottom: 50px;
+    bottom: 80px;
   }
 
   .spotify-login-button {
-    padding: 15px 35px;
-    font-size: 0.8rem;
+    padding: 20px 35px;
+    font-size: 0.9rem;
     border-radius: 30px;
   }
 
