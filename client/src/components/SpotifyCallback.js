@@ -21,7 +21,7 @@ function SpotifyCallback() {
     console.log('Quiz completed:', quizCompleted);
     console.log('Spotify ID stored:', spotifyID)
 
-    const redirectPath = quizCompleted ? '/app/home' : '/app/quiz';
+    const redirectPath = quizCompleted ? '/app/home' : '/app/prestart';
     navigate(redirectPath, { replace: true });
   }, [navigate, quizCompleted]);
   return null;
