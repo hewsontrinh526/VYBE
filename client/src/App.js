@@ -8,6 +8,7 @@ import LoadingAnimation from './components/Loading';
 import ColourSelect from './components/ColourSelect';
 import SpotifyCallback from './components/SpotifyCallback';
 import CompletedAnimation from './components/CompletedAnimation';
+import PreStart from './components/PreStart';
 
 function App() {
 	return (
@@ -42,6 +43,11 @@ function App() {
 				<Route path='/app/completed' element={
 					<TransitionWrap>
 						<CompletedAnimation />
+					</TransitionWrap>
+			} />
+				<Route path='/app/prestart' element={
+					<TransitionWrap>
+						<PreStart />
 					</TransitionWrap>
 			} />
 			</Routes>
