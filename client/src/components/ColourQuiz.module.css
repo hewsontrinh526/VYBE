@@ -1,7 +1,7 @@
 
 .colours-select {
   position: absolute;
-  top: 42%;
+  top: 28%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -74,6 +74,21 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
+}
+
+.confirm-button {
+  position: absolute;
+  bottom: 38%;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, 50%);
+  padding: 20px;
+  font-family: 'Geom', sans-serif;
+  color: #0C0C20;
+  border: none;
+  border-radius: 50px;
+  min-width: 40vw;
+  max-width: 300px;
 }
 
 @media screen and (max-height: 667px) {

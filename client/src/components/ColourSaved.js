@@ -4,7 +4,6 @@ import styles from './ColourQuiz.module.css';
 import './blobs.css';
 
 function ColourSaved({ newColour, clickCount }) {
-
 	// need this array to have the saved colours displayed
 	let circleStyles = [
 		styles['circle-1'],
