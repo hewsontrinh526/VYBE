@@ -1,7 +1,7 @@
 
 .colours-select {
   position: absolute;
-  top: 28%;
+  top: 37%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -15,7 +15,7 @@
 
 .spotify-container {
   position: absolute;
-  top: 72%;
+  top: 73%;
   left: 50%;
   z-index: 1;
   transform: translate(-50%, -50%);
@@ -78,7 +78,7 @@
 
 .confirm-button {
   position: absolute;
-  bottom: 38%;
+  bottom: 36%;
   left: 50%;
   z-index: 1;
   transform: translate(-50%, 50%);
@@ -89,6 +89,7 @@
   border-radius: 50px;
   min-width: 40vw;
   max-width: 300px;
+  background-color: transparent;
 }
 
 @media screen and (max-height: 667px) {
@@ -103,6 +104,18 @@
     height: 40px;
   }
 
+  .colours-select {
+    top: 28%;
+  }
+
+  .confirm-button {
+    bottom: 38%
+  }
+
+  .spotify-container {
+    bottom: 20%;
+  }
+
 }
 
 @media screen and (max-width: 450px) {
@@ -111,6 +124,10 @@
     height: 7%;
     max-width: 100%;
     gap: 0.7rem;
+  }
+
+  .spotify-container {
+    top: 74%;
   }
 
 }

@@ -16,9 +16,10 @@ function ColourSaved({ newColour, clickCount }) {
 	let circles = [];
 	for (let index = 0; index < 5; index++) {
 		const circleColour =
-			index + 1 === clickCount
+			index === clickCount
 				? `hsl(${newColour.h}, ${newColour.s}%, ${newColour.l}%)`
 				: circleStyles[index];
+
 		circles.push(
 			<div
 				key={index}
@@ -26,6 +27,7 @@ function ColourSaved({ newColour, clickCount }) {
 				style={{ backgroundColor: circleColour }}
 			></div>
 		);
+		// console.log(`Processing item at index ${index}`);
 	}
 
 	return (

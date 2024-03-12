@@ -18,9 +18,7 @@ const trackIds = [
 function ColourSelect({ playNext }) {
 	let [clickCount, setClickCount] = useState(0);
 	const [currentColour, setCurrentColour] = useState({
-		h: 0,
-		s: 0,
-		l: 100,
+		hsl: { hue: 0, saturation: 0, lightness: 0 },
 	});
 	const [colourArray, setColourArray] = useState([]);
 	const navigate = useNavigate();
@@ -50,18 +48,19 @@ function ColourSelect({ playNext }) {
 				colourLightness: currentColour.l,
 			},
 		]);
-		setCurrentColour(currentColour);
+		setCurrentColour({});
 		setClickCount((prevCount) => prevCount + 1);
 		playNext();
 		console.log(
 			`Confirmed colour: (hue:${currentColour.h}, sat:${currentColour.s}, light:${currentColour.l})`
 		);
+		console.log(`click: ${clickCount}`);
 	}, [
 		currentColour,
-		setCurrentColour,
-		setColourArray,
-		setClickCount,
-		playNext,
+		// setCurrentColour,
+		// setColourArray,
+		// setClickCount,
+		// playNext,
 	]);
 
 	useEffect(() => {
