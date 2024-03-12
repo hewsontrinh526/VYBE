@@ -24,6 +24,7 @@ function ColourSelect({ playNext }) {
 	const navigate = useNavigate();
 	const [hasNavigated, setHasNavigated] = useState(false);
 	const spotifyID = localStorage.getItem('spotifyID');
+	const [savedColour, setSavedColour] = useState('');
 
 	const handleColourChange = useCallback((color) => {
 		// console.log(`Selected colour: hsl(${color.h}, ${color.s}%, ${color.l}%)`);
@@ -36,9 +37,9 @@ function ColourSelect({ playNext }) {
 	}, []);
 
 	const handleConfirmColour = useCallback(() => {
-		console.log(
-			`Colour: (hue:${currentColour.h}, sat:${currentColour.s}, light:${currentColour.l})`
-		);
+		// console.log(
+		// 	`Colour: (hue:${currentColour.h}, sat:${currentColour.s}, light:${currentColour.l})`
+		// );
 
 		setColourArray((prevArray) => [
 			...prevArray,
@@ -48,15 +49,17 @@ function ColourSelect({ playNext }) {
 				colourLightness: currentColour.l,
 			},
 		]);
+		setSavedColour(currentColour);
 		setCurrentColour({});
 		setClickCount((prevCount) => prevCount + 1);
 		playNext();
-		console.log(
-			`Confirmed colour: (hue:${currentColour.h}, sat:${currentColour.s}, light:${currentColour.l})`
-		);
+		// console.log(
+		// 	`Confirmed colour: (hue:${currentColour.h}, sat:${currentColour.s}, light:${currentColour.l})`
+		// );
 		console.log(`click: ${clickCount}`);
 	}, [
 		currentColour,
+		savedColour,
 		// setCurrentColour,
 		// setColourArray,
 		// setClickCount,
@@ -113,7 +116,7 @@ function ColourSelect({ playNext }) {
 					Confirm
 				</button>
 				<div>
-					<ColourSaved newColour={currentColour} clickCount={clickCount} />
+					<ColourSaved newColour={savedColour} clickCount={clickCount} />
 				</div>
 			</div>
 		</div>

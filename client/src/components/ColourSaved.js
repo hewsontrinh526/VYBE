@@ -16,7 +16,7 @@ function ColourSaved({ newColour, clickCount }) {
 	let circles = [];
 	for (let index = 0; index < 5; index++) {
 		const circleColour =
-			index === clickCount
+			index + 1 === clickCount
 				? `hsl(${newColour.h}, ${newColour.s}%, ${newColour.l}%)`
 				: circleStyles[index];
 
