@@ -10,12 +10,13 @@
   align-items: stretch;
   gap: 50px;
 }
-
+/* greys out confirm button on quiz page when in mobile resolution */
+/*
  button:hover {
     filter: brightness(40%);
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
+  } */
 
 .home-button {
   display: inline-flex;

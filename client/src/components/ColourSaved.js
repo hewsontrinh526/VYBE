@@ -4,7 +4,6 @@ import styles from './ColourQuiz.module.css';
 import './blobs.css';
 
 function ColourSaved({ newColour, clickCount }) {
-
 	// need this array to have the saved colours displayed
 	let circleStyles = [
 		styles['circle-1'],
@@ -20,6 +19,7 @@ function ColourSaved({ newColour, clickCount }) {
 			index + 1 === clickCount
 				? `hsl(${newColour.h}, ${newColour.s}%, ${newColour.l}%)`
 				: circleStyles[index];
+
 		circles.push(
 			<div
 				key={index}
@@ -27,6 +27,7 @@ function ColourSaved({ newColour, clickCount }) {
 				style={{ backgroundColor: circleColour }}
 			></div>
 		);
+		// console.log(`Processing item at index ${index}`);
 	}
 
 	return (

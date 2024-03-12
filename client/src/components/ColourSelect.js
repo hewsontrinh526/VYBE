@@ -18,28 +18,53 @@ const trackIds = [
 function ColourSelect({ playNext }) {
 	let [clickCount, setClickCount] = useState(0);
 	const [currentColour, setCurrentColour] = useState({
-		hsl: { h: 0, s: 0, l: 0 },
+		hsl: { hue: 0, saturation: 0, lightness: 0 },
 	});
-	const [arrayColours, setColourArray] = useState([]);
+	const [colourArray, setColourArray] = useState([]);
 	const navigate = useNavigate();
 	const [hasNavigated, setHasNavigated] = useState(false);
 	const spotifyID = localStorage.getItem('spotifyID');
-	console.log(spotifyID);
+	const [savedColour, setSavedColour] = useState('');
 
 	const handleColourChange = useCallback((color) => {
-		console.log(`Colour: (hue:${color.h}, sat:${color.s}, light:${color.l})`);
-		setCurrentColour(color);
+		// console.log(`Selected colour: hsl(${color.h}, ${color.s}%, ${color.l}%)`);
+		// Update setCurrentColour to match the expected structure
+		setCurrentColour({
+			h: color.h,
+			s: color.s,
+			l: color.l,
+		});
+	}, []);
+
+	const handleConfirmColour = useCallback(() => {
+		// console.log(
+		// 	`Colour: (hue:${currentColour.h}, sat:${currentColour.s}, light:${currentColour.l})`
+		// );
+
 		setColourArray((prevArray) => [
 			...prevArray,
 			{
-				colourHue: color.h,
-				colourSaturation: color.s,
-				colourLightness: color.l,
+				colourHue: currentColour.h,
+				colourSaturation: currentColour.s,
+				colourLightness: currentColour.l,
 			},
 		]);
+		setSavedColour(currentColour);
+		setCurrentColour({});
 		setClickCount((prevCount) => prevCount + 1);
 		playNext();
-	}, []);
+		// console.log(
+		// 	`Confirmed colour: (hue:${currentColour.h}, sat:${currentColour.s}, light:${currentColour.l})`
+		// );
+		console.log(`click: ${clickCount}`);
+	}, [
+		currentColour,
+		savedColour,
+		// setCurrentColour,
+		// setColourArray,
+		// setClickCount,
+		// playNext,
+	]);
 
 	useEffect(() => {
 		if (clickCount === 5 && !hasNavigated) {
@@ -48,7 +73,7 @@ function ColourSelect({ playNext }) {
 				navigate('/app/completed');
 			}, 2000);
 
-			const songs = arrayColours.map((item, index) => ({
+			const songs = colourArray.map((item, index) => ({
 				trackID: trackIds[index].trackId,
 				colourHue: item.colourHue,
 				colourSaturation: item.colourSaturation,
@@ -69,8 +94,8 @@ function ColourSelect({ playNext }) {
 					console.error('Error saving data:', error);
 				});
 		}
-		console.log(`arrayColours:`, arrayColours);
-	}, [clickCount, navigate, arrayColours, hasNavigated]);
+		console.log(`colourArray:`, colourArray);
+	}, [clickCount, navigate, colourArray, hasNavigated]);
 
 	return (
 		<div>
@@ -80,8 +105,18 @@ function ColourSelect({ playNext }) {
 						<ColourWheel onColourChange={handleColourChange} />
 					</div>
 				</form>
+				<button
+					onClick={handleConfirmColour}
+					// needs % in s and l for colour wheel background to work because sat and light are calculated by %
+					style={{
+						backgroundColor: `hsl(${currentColour.h}, ${currentColour.s}%, ${currentColour.l}%)`,
+					}}
+					className={styles['confirm-button']}
+				>
+					Confirm
+				</button>
 				<div>
-					<ColourSaved newColour={currentColour} clickCount={clickCount} />
+					<ColourSaved newColour={savedColour} clickCount={clickCount} />
 				</div>
 			</div>
 		</div>
