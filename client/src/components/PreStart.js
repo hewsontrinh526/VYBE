@@ -23,9 +23,9 @@ const PreStart = () => {
       </header>
       <div className={styles['prestart-container']}>
         <h1 className={styles['text']}>
-          Time to calibrate your vybe!<br />
+          Choices here impact the algorithm.<br />
           <br />
-          Tap to select a colour.
+          No final tunes - just vibes.
         </h1>
         </div>
       </div>
