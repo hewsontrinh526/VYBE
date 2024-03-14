@@ -11,6 +11,7 @@ import ColorNamer from 'color-namer';
 function HomePage() {
 	const [showPlayVybeModal, setShowPlayVybeModal] = useState(false);
 	const [showCreateVybeModal, setShowCreateVybeModal] = useState(false);
+	const [showRedoVybeModal, setRedoVybeModal] = useState(false);
 	const [showSpotifyIframeModal, setShowSpotifyIframeModal] = useState(false);
 	const [spotifyToken, setSpotifyToken] = useState('');
 	const [currentColour, setCurrentColour] = useState({
@@ -98,6 +99,11 @@ function HomePage() {
 		} /* finally {
 			setShowLoadingAnimation(false);
 		} */
+	};
+
+	const handleRedoVybe = () => {
+		console.log('redo vybe button clicked');
+		setRedoVybeModal(true);
 	};
 
 	const handlePlaylistClick = (playlistID) => {
@@ -200,10 +206,6 @@ function HomePage() {
 		}
 	};
 
-	const handleShowVybe = () => {
-		setShowVybeModal(true); // Show the modal when the button is clicked
-	};
-
 	// drop quizzes collection to redo quiz
 	const handleDropQuiz = () => {
 		const userData = { spotifyID: spotifyID };
@@ -231,26 +233,23 @@ function HomePage() {
 					</header>
 					<div className={styles['button-container']}>
 						<button
-							className={`${styles['home-button']} ${
-								showCreateVybeModal || showPlayVybeModal ? styles['hidden'] : ''
-							}`}
+							className={`${styles['home-button']} ${showCreateVybeModal || showPlayVybeModal || showRedoVybeModal ? styles['hidden'] : ''
+								}`}
 							onClick={handleCreateVybe}
 						>
 							create vybe
 						</button>
 						<button
-							className={`${styles['home-button']} ${
-								showCreateVybeModal || showPlayVybeModal ? styles['hidden'] : ''
-							}`}
+							className={`${styles['home-button']} ${showCreateVybeModal || showPlayVybeModal || showRedoVybeModal ? styles['hidden'] : ''
+								}`}
 							onClick={handlePlayVybe}
 						>
 							play vybe
 						</button>
 						<button
-							className={`${styles['home-button']} ${
-								showCreateVybeModal || showPlayVybeModal ? styles['hidden'] : ''
-							}`}
-							onClick={handleDropQuiz}
+							className={`${styles['home-button']} ${showCreateVybeModal || showPlayVybeModal || showRedoVybeModal ? styles['hidden'] : ''
+								}`}
+							onClick={handleRedoVybe}
 						>
 							redo vybe
 						</button>
@@ -301,6 +300,32 @@ function HomePage() {
 												onClick={() => handlePlaylistClick(playlist.playlistID)}
 											></div>
 										))}
+								</div>
+							</div>
+						</div>
+					)}
+					{showRedoVybeModal && (
+						<div className={styles['modal']}>
+							<div className={styles['modal-content']}>
+								<span
+									className={styles['close-button']}
+									onClick={() => setRedoVybeModal(false)}
+								>
+									&times;
+								</span>
+								<div className={styles['redo-vybe-container']}>
+									<h1 className={styles['confirmation-text']}>Are you sure you want to redo the vybe?</h1>
+									<div className={styles['button-wrapper']}>
+										<button onClick={handleDropQuiz} className={styles['yes-button']}>
+											Yes
+										</button>
+										<button
+											onClick={() => setRedoVybeModal(false)}
+											className={styles['no-button']}
+										>
+											No
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>

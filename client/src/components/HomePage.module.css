@@ -125,6 +125,43 @@
   flex: 0 0 auto;
 }
 
+.redo-vybe-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+  color: white;
+}
+
+.confirmation-text {
+font-size: 1.5rem;
+text-align: center;
+width: 100%;
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.yes-button, .no-button {
+  padding: 20px;
+  font-family: 'Geom', sans-serif;
+  color: #0C0C20;
+  background-color: rgba(151, 169, 246, 0.5);
+  border: none;
+  border-radius: 50px;
+  min-width: 40vw;
+  max-width: 150px;
+  height: auto;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .playlist-circle {
     width: 80px;
