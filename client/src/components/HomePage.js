@@ -227,7 +227,9 @@ function HomePage() {
 				<LoadingAnimation />
 			) : (
 				<>
-					<header className={styles['header']}>
+					<header className={`{styles['header']} ${
+            showCreateVybeModal || showPlayVybeModal || showInfoModal || showRedoVybeModal ? styles['hidden'] : ''
+          }`}>
 						<div className='container-logo'>
 							<img src='/logo.png' alt='logo' className='logo' />
 						</div>
