@@ -150,7 +150,9 @@ width: 100%;
 .yes-button, .no-button {
   padding: 20px;
   font-family: 'Geom', sans-serif;
-  color: #0C0C20;
+  font-size: 1rem;
+  text-align: center;
+  color: white;
   background-color: rgba(151, 169, 246, 0.5);
   border: none;
   border-radius: 50px;
