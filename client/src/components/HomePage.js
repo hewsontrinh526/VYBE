@@ -235,7 +235,7 @@ function HomePage() {
           <div className={styles['info-container']}>
           <button
               className={`${styles['info-button']} ${
-								showCreateVybeModal || showPlayVybeModal || showInfoModal ? styles['hidden'] : ''
+								showCreateVybeModal || showPlayVybeModal || showInfoModal || showRedoVybeModal ? styles['hidden'] : ''
 							}`}
               onClick={() => setShowInfoModal(true)}
             >
