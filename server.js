@@ -32,9 +32,16 @@ const port = 3500;
 
 // connecting to mongoDB
 mongoose
-	.connect('mongodb+srv://6734:PMPp9rr2m3OLWu6a@cluster0.vthfiow.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+	.connect(
+		'mongodb+srv://6734:PMPp9rr2m3OLWu6a@cluster0.vthfiow.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+	)
 	.then(() => console.log('MongoDB connected...'))
 	.catch((err) => console.error(err));
+
+// mongoose
+// 	.connect('mongodb://localhost:27017/VYBE')
+// 	.then(() => console.log('MongoDB connected...'))
+// 	.catch((err) => console.error(err));
 
 // middlewares
 // for parsing application/json
@@ -117,8 +124,17 @@ app.get('/callback', async (req, res) => {
 	quizCount = await Quiz.countDocuments({ spotifyID: user.spotifyID });
 	const quizCompleted = quizCount > 0;
 
-	const redirectUri = `https://vybe-dsxp.onrender.com/app/spotify-callback?access_token=${spotifyTokens.access_token}&spotify_id=${userInfo.id}&quiz_completed=${quizCompleted}`;
+	// const redirectUri = `https://vybe-dsxp.onrender.com/app/spotify-callback?access_token=${spotifyTokens.access_token}&spotify_id=${userInfo.id}&quiz_completed=${quizCompleted}`;
+	// res.redirect(redirectUri);
+
+	playlistCheck = await Playlist.countDocuments({ spotifyID: user.spotifyID });
+	const playlistNone = playlistCheck === 0;
+
+	const redirectUri = `https://vybe-dsxp.onrender.com/app/spotify-callback?access_token=${spotifyTokens.access_token}&spotify_id=${userInfo.id}&quiz_completed=${quizCompleted}&playlist_none=${playlistNone}`;
 	res.redirect(redirectUri);
+
+	// const redirectUri = `http://localhost:3500/app/spotify-callback?access_token=${spotifyTokens.access_token}&spotify_id=${userInfo.id}&quiz_completed=${quizCompleted}&playlist_none=${playlistNone}`;
+	// res.redirect(redirectUri);
 });
 
 function authenticateToken(req, res, next) {
@@ -342,5 +358,11 @@ app.get('*', (req, res) =>
 
 // start the server
 app.listen(port, () => {
-	console.log(`Example app listening at https://vybe-dsxp.onrender.com:${port}`);
+	console.log(
+		`Example app listening at https://vybe-dsxp.onrender.com:${port}`
+	);
 });
+
+// app.listen(port, () => {
+// 	console.log(`Example app listening at http://localhost:${port}`);
+// });

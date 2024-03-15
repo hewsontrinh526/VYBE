@@ -24,7 +24,9 @@ function HomePage() {
 	const [playlists, setPlaylists] = useState([]);
 	const spotifyID = localStorage.getItem('spotifyID');
 	const navigate = useNavigate();
-  const [showInfoModal, setShowInfoModal] = useState(false);
+	const [showInfoModal, setShowInfoModal] = useState(false);
+	const playlistNone = localStorage.getItem('playlistNone');
+	const [ifPlaylist, setIfPlaylist] = useState(false);
 
 	useEffect(() => {
 		const fetchToken = async () => {
@@ -196,6 +198,9 @@ function HomePage() {
 			await axios.post('/playlist/save/', savePlaylistPayload);
 			console.log('Playlist saved successfully');
 
+			// Update playlistNone in local storage to 'false'
+			setIfPlaylist(false);
+
 			const createdPlaylistUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
 			setPlaylistUrl(createdPlaylistUrl); // Update the state with the new URL
 			setShowSpotifyIframeModal(true);
@@ -220,6 +225,34 @@ function HomePage() {
 				console.error('Error dropping quiz collection:', error);
 			});
 	};
+	// check if user has playlists, if no hide play vybe button
+	// const handlePlaylistNone = () => {
+	// 	const playlistNoneBoolean = playlistNone === 'true'; // Parse string to boolean
+	// 	if (playlistNoneBoolean) {
+	// 		setIfPlaylist(true);
+	// 	}
+	// };
+
+	// useEffect(() => {
+	// 	// const playlistNone = localStorage.getItem('playlistNone');
+	// 	if (playlistNone === 'true') {
+	// 		setIfPlaylist(true);
+	// 	} else if (playlistNone === 'false') {
+	// 		setIfPlaylist(false);
+	// 	}
+	// }, []);
+
+	useEffect(() => {
+		// const playlistNone = localStorage.getItem('playlistNone');
+		if (playlistNone === 'true') {
+			setIfPlaylist(true);
+		} else if (playlistNone === 'false') {
+			setIfPlaylist(false);
+		}
+	}, [playlistNone]);
+
+	console.log('playlistNone:', playlistNone);
+	console.log('ifPlaylist:', ifPlaylist);
 
 	return (
 		<div className='home-container'>
@@ -227,41 +260,73 @@ function HomePage() {
 				<LoadingAnimation />
 			) : (
 				<>
-					<header className={`{styles['header']} ${
-            showCreateVybeModal || showPlayVybeModal || showInfoModal || showRedoVybeModal ? styles['hidden'] : ''
-          }`}>
+					<header
+						className={`{styles['header']} ${
+							showCreateVybeModal ||
+							showPlayVybeModal ||
+							showInfoModal ||
+							showRedoVybeModal
+								? styles['hidden']
+								: ''
+						}`}
+					>
 						<div className='container-logo'>
 							<img src='/logo.png' alt='logo' className='logo' />
 						</div>
 					</header>
-          <div className={styles['info-container']}>
-          <button
-              className={`${styles['info-button']} ${
-								showCreateVybeModal || showPlayVybeModal || showInfoModal || showRedoVybeModal ? styles['hidden'] : ''
+					<div className={styles['info-container']}>
+						<button
+							className={`${styles['info-button']} ${
+								showCreateVybeModal ||
+								showPlayVybeModal ||
+								showInfoModal ||
+								showRedoVybeModal
+									? styles['hidden']
+									: ''
 							}`}
-              onClick={() => setShowInfoModal(true)}
-            >
-              ?
-            </button>
-          </div>
+							onClick={() => setShowInfoModal(true)}
+						>
+							?
+						</button>
+					</div>
 					<div className={styles['button-container']}>
 						<button
-							className={`${styles['home-button']} ${showCreateVybeModal || showPlayVybeModal || showInfoModal || showRedoVybeModal ? styles['hidden'] : ''
-								}`}
+							className={`${styles['home-button']} ${
+								showCreateVybeModal ||
+								showPlayVybeModal ||
+								showInfoModal ||
+								showRedoVybeModal
+									? styles['hidden']
+									: ''
+							}`}
 							onClick={handleCreateVybe}
 						>
 							create vybe
 						</button>
-						<button
-							className={`${styles['home-button']} ${showCreateVybeModal || showPlayVybeModal || showInfoModal || showRedoVybeModal ? styles['hidden'] : ''
+						{!ifPlaylist && (
+							<button
+								className={`${styles['home-button']} ${
+									showCreateVybeModal ||
+									showPlayVybeModal ||
+									showInfoModal ||
+									showRedoVybeModal
+										? styles['hidden']
+										: ''
 								}`}
-							onClick={handlePlayVybe}
-						>
-							play vybe
-						</button>
+								onClick={handlePlayVybe}
+							>
+								play vybe
+							</button>
+						)}
 						<button
-							className={`${styles['home-button']} ${showCreateVybeModal || showPlayVybeModal || showInfoModal || showRedoVybeModal ? styles['hidden'] : ''
-								}`}
+							className={`${styles['home-button']} ${
+								showCreateVybeModal ||
+								showPlayVybeModal ||
+								showInfoModal ||
+								showRedoVybeModal
+									? styles['hidden']
+									: ''
+							}`}
 							onClick={handleRedoVybe}
 						>
 							redo vybe
@@ -327,9 +392,14 @@ function HomePage() {
 									&times;
 								</span>
 								<div className={styles['redo-vybe-container']}>
-									<h1 className={styles['confirmation-text']}>Are you sure you want to redo the vybe?</h1>
+									<h1 className={styles['confirmation-text']}>
+										Are you sure you want to redo the vybe?
+									</h1>
 									<div className={styles['button-wrapper']}>
-										<button onClick={handleDropQuiz} className={styles['yes-button']}>
+										<button
+											onClick={handleDropQuiz}
+											className={styles['yes-button']}
+										>
 											Yes
 										</button>
 										<button
@@ -362,25 +432,30 @@ function HomePage() {
 							</div>
 						</div>
 					)}
-          {showInfoModal && (
-            <div className={styles['modal']}>
-              <div className={styles['modal-content']}>
-                <span
-                  className={styles['close-button']}
-                  onClick={() => setShowInfoModal(false)}
-                >
-                  &times;
-                </span>
-                <h3>How to use VYBE?</h3>
-                <br />
-                <p>Click "create vybe" to select a colour and generate a playlist.</p>
-                <br />
-                <p>Click "play vybe" to view your previously saved playlists.</p>
-                <br />
-                <p>Click "redo vybe" to reset your vybe quiz.</p>
-              </div>
-            </div>
-          )}
+					{showInfoModal && (
+						<div className={styles['modal']}>
+							<div className={styles['modal-content']}>
+								<span
+									className={styles['close-button']}
+									onClick={() => setShowInfoModal(false)}
+								>
+									&times;
+								</span>
+								<h3>How to use VYBE?</h3>
+								<br />
+								<p>
+									Click "create vybe" to select a colour and generate a
+									playlist.
+								</p>
+								<br />
+								<p>
+									Click "play vybe" to view your previously saved playlists.
+								</p>
+								<br />
+								<p>Click "redo vybe" to reset your vybe quiz.</p>
+							</div>
+						</div>
+					)}
 				</>
 			)}
 		</div>
