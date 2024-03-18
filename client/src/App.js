@@ -23,9 +23,7 @@ function App() {
 					<HomePage />
 			} />
 				<Route path='/app/quiz' element={
-				<TransitionWrap>
 					<ColourQuiz />
-				</TransitionWrap>
 			} />
 				<Route path='/app/loading' element={
 				<TransitionWrap>

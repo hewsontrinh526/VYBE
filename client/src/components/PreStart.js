@@ -10,7 +10,7 @@ const PreStart = () => {
   useEffect(() => {
     setTimeout(() => {
       navigate('/app/quiz');
-    }, 7000);
+    }, 6000);
   }, [navigate]);
 
 
