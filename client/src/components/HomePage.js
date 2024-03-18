@@ -249,7 +249,7 @@ function HomePage() {
 		} else if (playlistNone === 'false') {
 			setIfPlaylist(false);
 		}
-	}, [playlistNone, ifPlaylist]);
+	}, [playlistNone]);
 
 	console.log('playlistNone:', playlistNone);
 	console.log('ifPlaylist:', ifPlaylist);
