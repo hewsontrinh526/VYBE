@@ -183,14 +183,15 @@
 
 .close-button {
   position: absolute;
-  top: 30px;
-  right: 45px;
+  top: 40px;
+  right: 50px;
   font-size: 30px;
   font-weight: bold;
   cursor: pointer;
   border: none;
   background: transparent;
   color: #fff;
+  z-index: 1003;
 }
 
 .hidden {
