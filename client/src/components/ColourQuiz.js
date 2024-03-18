@@ -9,7 +9,9 @@ function ColourQuiz() {
 	const [showInfoModal, setShowInfoModal] = useState(false);
 	return (
 		<div className='quiz-container'>
-			<header className={styles['header']}>
+			<header className={`${styles['header']} ${
+				showInfoModal ? styles ['hidden'] : ''
+			}`}>
 				<div className='container-logo'>
 					<img src='/logo.png' alt='logo' className='logo' />
 				</div>
