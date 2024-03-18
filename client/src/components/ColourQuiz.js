@@ -33,13 +33,13 @@ function ColourQuiz() {
 			</div>
 			{showInfoModal && (
 			<div className={styles['modal']}>
-				<div className={styles['modal-content']}>
-					<span
+				<span
 						className={styles['close-button']}
 						onClick={() => setShowInfoModal(false)}
-					>
-						&times;
-					</span>
+				>
+					&times;
+				</span>
+				<div className={styles['modal-content']}>
 					<h2>What's happening here?</h2>
 					<p>
 						To properly calibrate your vybe, you'll need to choose what colour best represents each song shown to you.
